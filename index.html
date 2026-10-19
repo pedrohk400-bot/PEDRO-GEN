@@ -9,335 +9,95 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Cairo,Arial,sans-serif;
+  color:#f5f7ff;
+  background:radial-gradient(circle at top right,#172c50,transparent 40%),#080b14;
+  min-height:100vh
 }
-
-body {
-  margin: 0;
-  font-family: Cairo, Arial, sans-serif;
-  color: #f5f7ff;
-  background:
-    radial-gradient(circle at top right, #172c50, transparent 40%),
-    #080b14;
-  min-height: 100vh;
+button,input,select{font-family:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.container{width:min(1200px,100%);margin:auto;padding:20px}
+.card{
+  background:rgba(20,26,42,.88);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 15px 45px rgba(0,0,0,.22)
 }
-
-button, input, select {
-  font-family: inherit;
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+  width:48px;height:48px;display:grid;place-items:center;
+  border-radius:16px;background:linear-gradient(135deg,#76a2ff,#315bd0);
+  font-size:18px;font-weight:800
 }
-
-button {
-  cursor: pointer;
+.brand h1{margin:0;font-size:21px}
+.muted{color:#9ca8c2;font-size:12px;line-height:1.8}
+.login{width:min(430px,100%);margin:8vh auto}
+.field{margin:14px 0}
+.field label{display:block;margin-bottom:7px;color:#bbc6df;font-size:12px}
+.field input,.field select,.search,.filter{
+  width:100%;padding:12px;color:white;background:#090d18;
+  border:1px solid #ffffff18;border-radius:12px;outline:none
 }
-
-.hidden {
-  display: none !important;
+.field input:focus,.search:focus{border-color:#6895ff}
+.field input[readonly]{color:#8fb0ff}
+.btn{
+  border:0;border-radius:12px;padding:10px 14px;font-weight:700
 }
-
-.container {
-  width: min(1200px, 100%);
-  margin: auto;
-  padding: 20px;
+.primary{color:white;background:linear-gradient(135deg,#6595ff,#3a63df)}
+.soft{color:white;background:#ffffff0b;border:1px solid #ffffff18}
+.danger{color:#ff9baa;background:#ff647719;border:1px solid #ff647740}
+.success{color:#67e5b5;background:#35d49a19;border:1px solid #35d49a40}
+.full{width:100%}
+.error{color:#ff8c9e;font-size:12px;overflow-wrap:anywhere}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.heading{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;margin:26px 0 14px;flex-wrap:wrap
 }
-
-.card {
-  background: rgba(20, 26, 42, .88);
-  border: 1px solid rgba(255,255,255,.09);
-  border-radius: 22px;
-  padding: 20px;
-  box-shadow: 0 15px 45px rgba(0,0,0,.22);
+.heading h2{margin:0;font-size:20px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat-label{color:#9ca8c2;font-size:12px}
+.stat-number{margin-top:8px;font-size:30px;font-weight:800}
+.toolbar{display:flex;align-items:center;gap:10px;padding:14px;margin-bottom:12px;flex-wrap:wrap}
+.search{flex:1;min-width:180px}
+.filter{width:auto;max-width:100%}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:800px}
+th,td{
+  padding:14px;text-align:right;border-bottom:1px solid #ffffff12;
+  font-size:12px;white-space:nowrap
 }
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+th{color:#aab7d1;background:#ffffff04}
+.badge{display:inline-block;border-radius:20px;padding:5px 9px;font-size:10px;font-weight:700}
+.badge-active{background:#35d49a1a;color:#68e5b5}
+.badge-disabled{background:#ff64771a;color:#ff9baa}
+.badge-expired{background:#ffbd661a;color:#ffd18d}
+.small-btn{font-size:10px;padding:7px 9px;margin:2px}
+.empty{padding:25px;color:#9ca8c2;text-align:center;font-size:12px}
+.modal-bg{
+  position:fixed;inset:0;z-index:10;background:#03050bdc;
+  display:grid;place-items:center;padding:15px
 }
-
-.logo {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #76a2ff, #315bd0);
-  font-size: 18px;
-  font-weight: 800;
+.modal{width:min(520px,100%);max-height:92vh;overflow:auto}
+.modal-actions{display:flex;gap:8px;margin-top:16px}
+.modal-actions button{flex:1}
+.toast{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  z-index:20;max-width:90%;padding:12px 16px;border-radius:13px;
+  border:1px solid #ffffff20;background:#1b2439;font-size:12px;text-align:center
 }
-
-.brand h1 {
-  margin: 0;
-  font-size: 21px;
-}
-
-.muted {
-  color: #9ca8c2;
-  font-size: 12px;
-  line-height: 1.8;
-}
-
-.login {
-  width: min(430px, 100%);
-  margin: 8vh auto;
-}
-
-.field {
-  margin: 14px 0;
-}
-
-.field label {
-  display: block;
-  margin-bottom: 7px;
-  color: #bbc6df;
-  font-size: 12px;
-}
-
-.field input,
-.field select,
-.search,
-.filter {
-  width: 100%;
-  padding: 12px;
-  color: white;
-  background: #090d18;
-  border: 1px solid #ffffff18;
-  border-radius: 12px;
-  outline: none;
-}
-
-.field input:focus,
-.search:focus {
-  border-color: #6895ff;
-}
-
-.btn {
-  border: 0;
-  border-radius: 12px;
-  padding: 10px 14px;
-  font-weight: 700;
-}
-
-.primary {
-  color: white;
-  background: linear-gradient(135deg, #6595ff, #3a63df);
-}
-
-.soft {
-  color: white;
-  background: #ffffff0b;
-  border: 1px solid #ffffff18;
-}
-
-.danger {
-  color: #ff9baa;
-  background: #ff647719;
-  border: 1px solid #ff647740;
-}
-
-.success {
-  color: #67e5b5;
-  background: #35d49a19;
-  border: 1px solid #35d49a40;
-}
-
-.full {
-  width: 100%;
-}
-
-.error {
-  color: #ff8c9e;
-  font-size: 12px;
-  overflow-wrap: anywhere;
-}
-
-.top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin: 26px 0 14px;
-  flex-wrap: wrap;
-}
-
-.heading h2 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.stat-label {
-  color: #9ca8c2;
-  font-size: 12px;
-}
-
-.stat-number {
-  margin-top: 8px;
-  font-size: 30px;
-  font-weight: 800;
-}
-
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-
-.search {
-  flex: 1;
-  min-width: 180px;
-}
-
-.filter {
-  width: auto;
-  max-width: 100%;
-}
-
-.table-wrap {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 760px;
-}
-
-th, td {
-  padding: 14px;
-  text-align: right;
-  border-bottom: 1px solid #ffffff12;
-  font-size: 12px;
-  white-space: nowrap;
-}
-
-th {
-  color: #aab7d1;
-  background: #ffffff04;
-}
-
-.badge {
-  display: inline-block;
-  border-radius: 20px;
-  padding: 5px 9px;
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.badge-active {
-  background: #35d49a1a;
-  color: #68e5b5;
-}
-
-.badge-disabled {
-  background: #ff64771a;
-  color: #ff9baa;
-}
-
-.badge-expired {
-  background: #ffbd661a;
-  color: #ffd18d;
-}
-
-.small-btn {
-  font-size: 10px;
-  padding: 7px 9px;
-  margin: 2px;
-}
-
-.empty {
-  padding: 25px;
-  color: #9ca8c2;
-  text-align: center;
-  font-size: 12px;
-}
-
-.modal-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  background: #03050bdc;
-  display: grid;
-  place-items: center;
-  padding: 15px;
-}
-
-.modal {
-  width: min(520px, 100%);
-  max-height: 92vh;
-  overflow: auto;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.modal-actions button {
-  flex: 1;
-}
-
-.toast {
-  position: fixed;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
-  max-width: 90%;
-  padding: 12px 16px;
-  border-radius: 13px;
-  border: 1px solid #ffffff20;
-  background: #1b2439;
-  font-size: 12px;
-  text-align: center;
-}
-
-@media(max-width: 800px) {
-  .stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media(max-width: 480px) {
-  .container {
-    padding: 12px;
-  }
-
-  .card {
-    padding: 14px;
-  }
-
-  .stat-number {
-    font-size: 25px;
-  }
-
-  .brand h1 {
-    font-size: 17px;
-  }
+@media(max-width:800px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){
+  .container{padding:12px}
+  .card{padding:14px}
+  .stat-number{font-size:25px}
+  .brand h1{font-size:17px}
 }
 </style>
 </head>
@@ -405,17 +165,14 @@ th {
       <div class="stat-label">إجمالي الحسابات</div>
       <div id="total" class="stat-number">0</div>
     </div>
-
     <div class="card">
       <div class="stat-label">الحسابات النشطة</div>
       <div id="activeCount" class="stat-number">0</div>
     </div>
-
     <div class="card">
       <div class="stat-label">الحسابات المعطلة</div>
       <div id="disabledCount" class="stat-number">0</div>
     </div>
-
     <div class="card">
       <div class="stat-label">الاشتراكات المنتهية</div>
       <div id="expiredCount" class="stat-number">0</div>
@@ -425,7 +182,7 @@ th {
   <div class="heading">
     <div>
       <h2>الحسابات</h2>
-      <div class="muted">البحث والتفعيل والتعطيل والتجديد</div>
+      <div class="muted">البحث والتفعيل والتعطيل والتجديد والحذف</div>
     </div>
   </div>
 
@@ -470,12 +227,23 @@ th {
 
       <div class="field">
         <label>اسم المستخدم</label>
-        <input id="username" required maxlength="80">
+        <input id="username" required maxlength="80" autocomplete="off">
       </div>
 
       <div class="field">
-        <label>رقم الحساب</label>
-        <input id="accountNumber" required maxlength="30">
+        <label>رقم الحساب - 7 أرقام عشوائية</label>
+        <div style="display:flex;gap:8px">
+          <input id="accountNumber" required readonly maxlength="7" style="flex:1">
+          <button id="generateBtn" type="button" class="btn soft">🎲 توليد</button>
+        </div>
+        <div class="muted">يتحقق الموقع من عدم استخدام الرقم قبل حفظ الحساب.</div>
+      </div>
+
+      <div id="passwordField" class="field">
+        <label>كلمة مرور التطبيق</label>
+        <input id="accountPassword" type="password" minlength="6"
+          autocomplete="new-password" placeholder="6 أحرف أو أرقام على الأقل">
+        <div class="muted">ستُستخدم كلمة المرور في Firebase Authentication ولا تُحفظ كنص مكشوف في قاعدة البيانات.</div>
       </div>
 
       <div class="field">
@@ -497,16 +265,15 @@ th {
         </select>
       </div>
 
-      <div class="field">
-        <label>معرّف الجهاز (اختياري)</label>
-        <input id="deviceId" maxlength="150">
-      </div>
+      <p class="muted">
+        التجديد يضيف المدة الجديدة إلى نهاية الاشتراك الحالي إن كان سارياً،
+        وإلا يبدأ من الوقت الحالي.
+      </p>
 
-      <p class="muted">التجديد يضيف المدة الجديدة إلى نهاية الاشتراك الحالي إن كان سارياً، وإلا يبدأ من الوقت الحالي.</p>
       <p id="formError" class="error"></p>
 
       <div class="modal-actions">
-        <button id="saveBtn" class="btn primary">حفظ</button>
+        <button id="saveBtn" class="btn primary">حفظ الحساب</button>
         <button id="cancelBtn" type="button" class="btn soft">إلغاء</button>
       </div>
     </form>
@@ -534,6 +301,23 @@ th {
   var auth = firebase.auth();
   var db = firebase.database();
   var usersRef = db.ref("users");
+  var accountNumbersRef = db.ref("accountNumbers");
+
+  /*
+   * تطبيق Firebase ثانوي لإنشاء حسابات المستخدمين
+   * دون إخراج المدير من جلسة لوحة الإدارة.
+   */
+  var accountAuthApp;
+  try {
+    accountAuthApp = firebase.app("BOK_PED_ACCOUNT_AUTH");
+  } catch (e) {
+    accountAuthApp = firebase.initializeApp(
+      window.BOK_PED_FIREBASE_CONFIG,
+      "BOK_PED_ACCOUNT_AUTH"
+    );
+  }
+
+  var accountAuth = accountAuthApp.auth();
   var users = {};
   var listener = null;
   var toastTimer = null;
@@ -548,7 +332,7 @@ th {
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () {
       $("toast").classList.add("hidden");
-    }, 3000);
+    }, 3500);
   }
 
   function escapeHtml(value) {
@@ -576,14 +360,14 @@ th {
 
   function status(user) {
     if (expired(user)) {
-      return { key: "expired", label: "منتهي", cls: "badge-expired" };
+      return {key:"expired",label:"منتهي",cls:"badge-expired"};
     }
 
     if (user.active === true) {
-      return { key: "active", label: "نشط", cls: "badge-active" };
+      return {key:"active",label:"نشط",cls:"badge-active"};
     }
 
-    return { key: "disabled", label: "معطّل", cls: "badge-disabled" };
+    return {key:"disabled",label:"معطّل",cls:"badge-disabled"};
   }
 
   function formatDate(value) {
@@ -594,54 +378,46 @@ th {
     if (isNaN(date.getTime())) return "—";
 
     return new Intl.DateTimeFormat("ar-EG", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
+      year:"numeric",
+      month:"short",
+      day:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
     }).format(date);
   }
 
   function subscriptionName(user) {
     if (user.subscriptionName) return String(user.subscriptionName);
 
-    var names = {
-      day: "يوم واحد",
-      week: "أسبوع",
-      month: "شهر"
-    };
-
+    var names = {day:"يوم واحد",week:"أسبوع",month:"شهر"};
     return names[user.subscriptionType] || "غير محدد";
   }
 
   function render() {
     var all = Object.keys(users).map(function (key) {
-      var user = users[key] || {};
+      var user = Object.assign({}, users[key] || {});
       user._key = key;
       return user;
     });
 
-    var active = all.filter(function (u) {
+    $("total").textContent = all.length;
+
+    $("activeCount").textContent = all.filter(function (u) {
       return u.active === true && !expired(u);
     }).length;
 
-    var disabled = all.filter(function (u) {
+    $("disabledCount").textContent = all.filter(function (u) {
       return u.active !== true;
     }).length;
 
-    var expiredCount = all.filter(expired).length;
-
-    $("total").textContent = all.length;
-    $("activeCount").textContent = active;
-    $("disabledCount").textContent = disabled;
-    $("expiredCount").textContent = expiredCount;
+    $("expiredCount").textContent = all.filter(expired).length;
 
     var query = $("search").value.trim().toLowerCase();
     var filter = $("statusFilter").value;
 
     var rows = all.filter(function (u) {
       var s = status(u);
-      var matchesQuery = [
+      var matches = [
         u.username,
         u.accountNumber,
         u.uid,
@@ -650,7 +426,7 @@ th {
         return String(v || "").toLowerCase().indexOf(query) !== -1;
       });
 
-      return matchesQuery && (filter === "all" || filter === s.key);
+      return matches && (filter === "all" || filter === s.key);
     });
 
     $("usersBody").innerHTML = rows.map(function (u) {
@@ -658,17 +434,25 @@ th {
       var uid = u._key;
 
       return "<tr>" +
-        "<td><b>" + escapeHtml(u.username || "بدون اسم") + "</b><div class='muted'>" +
-        escapeHtml(uid) + "</div></td>" +
+        "<td><b>" + escapeHtml(u.username || "بدون اسم") + "</b>" +
+        "<div class='muted'>" + escapeHtml(uid) + "</div></td>" +
+
         "<td>" + escapeHtml(u.accountNumber || "—") + "</td>" +
         "<td>" + escapeHtml(subscriptionName(u)) + "</td>" +
         "<td>" + escapeHtml(formatDate(u.subscriptionEnd)) + "</td>" +
+
         "<td><span class='badge " + s.cls + "'>" + s.label + "</span></td>" +
+
         "<td>" +
-        "<button class='btn soft small-btn' data-action='edit' data-uid='" + escapeHtml(uid) + "'>تجديد/تعديل</button>" +
+        "<button class='btn soft small-btn' data-action='edit' data-uid='" +
+        escapeHtml(uid) + "'>تجديد/تعديل</button>" +
+
         "<button class='btn " + (u.active === true ? "danger" : "success") +
         " small-btn' data-action='toggle' data-uid='" + escapeHtml(uid) + "'>" +
         (u.active === true ? "تعطيل" : "تفعيل") + "</button>" +
+
+        "<button class='btn danger small-btn' data-action='delete' data-uid='" +
+        escapeHtml(uid) + "'>حذف</button>" +
         "</td></tr>";
     }).join("");
 
@@ -697,19 +481,81 @@ th {
     users = {};
   }
 
+  function randomAccountNumber() {
+    return String(Math.floor(1000000 + Math.random() * 9000000));
+  }
+
+  function generateNumber() {
+    $("accountNumber").value = randomAccountNumber();
+  }
+
+  /*
+   * حجز الرقم بعملية transaction.
+   * لا يمكن لحسابين حجز الرقم نفسه بنجاح في الوقت ذاته.
+   */
+  function reserveUniqueNumber(preferred, attempts) {
+    attempts = attempts || 0;
+
+    if (attempts >= 50) {
+      return Promise.reject(
+        new Error("تعذر إيجاد رقم حساب متاح. حاول مرة أخرى.")
+      );
+    }
+
+    var number = preferred || randomAccountNumber();
+    var reservation = "PENDING_" + auth.currentUser.uid;
+
+    return accountNumbersRef.child(number).transaction(
+      function (current) {
+        if (current === null) return reservation;
+        return;
+      },
+      undefined,
+      false
+    ).then(function (result) {
+      if (result.committed) return number;
+
+      $("accountNumber").value = randomAccountNumber();
+      return reserveUniqueNumber($("accountNumber").value, attempts + 1);
+    });
+  }
+
+  function releaseReservation(number) {
+    if (!number) return Promise.resolve();
+
+    return accountNumbersRef.child(number).transaction(
+      function (current) {
+        if (typeof current === "string" &&
+            current.indexOf("PENDING_") === 0) {
+          return null;
+        }
+        return;
+      },
+      undefined,
+      false
+    ).catch(function () {});
+  }
+
   function openModal(user, uid) {
     $("accountForm").reset();
     $("editUid").value = uid || "";
     $("formError").textContent = "";
-    $("modalTitle").textContent = uid ? "تعديل وتجديد الاشتراك" : "إضافة حساب جديد";
+
+    $("modalTitle").textContent = uid ?
+      "تعديل وتجديد الاشتراك" : "إضافة حساب جديد";
+
+    $("passwordField").classList.toggle("hidden", !!uid);
+    $("accountPassword").required = !uid;
+    $("generateBtn").classList.toggle("hidden", !!uid);
+    $("accountNumber").readOnly = true;
 
     if (user) {
       $("username").value = user.username || "";
       $("accountNumber").value = user.accountNumber || "";
       $("active").value = user.active === true ? "true" : "false";
-      $("deviceId").value = user.deviceId || "";
     } else {
       $("active").value = "true";
+      generateNumber();
     }
 
     $("modalBg").classList.remove("hidden");
@@ -758,16 +604,20 @@ th {
       render();
       toast("تم تحديث البيانات");
     }).catch(function (error) {
-      toast(error.message);
+      toast("فشل التحديث: " + error.message);
     });
   });
 
   $("search").addEventListener("input", render);
   $("statusFilter").addEventListener("change", render);
+
   $("addBtn").addEventListener("click", function () {
     openModal(null, null);
   });
+
+  $("generateBtn").addEventListener("click", generateNumber);
   $("cancelBtn").addEventListener("click", closeModal);
+
   $("modalBg").addEventListener("click", function (event) {
     if (event.target === $("modalBg")) closeModal();
   });
@@ -778,26 +628,63 @@ th {
 
     var uid = button.getAttribute("data-uid");
     var user = users[uid];
+
     if (!user) return;
 
-    if (button.getAttribute("data-action") === "edit") {
+    var action = button.getAttribute("data-action");
+
+    if (action === "edit") {
       openModal(user, uid);
       return;
     }
 
-    var activate = user.active !== true;
+    if (action === "toggle") {
+      var activate = user.active !== true;
 
-    if (!confirm((activate ? "تفعيل" : "تعطيل") + " الحساب " +
-      (user.username || uid) + "؟")) return;
+      if (!confirm((activate ? "تفعيل" : "تعطيل") +
+          " الحساب " + (user.username || uid) + "؟")) return;
 
-    usersRef.child(uid).update({
-      active: activate,
-      updatedAt: Date.now()
-    }).then(function () {
-      toast(activate ? "تم تفعيل الحساب" : "تم تعطيل الحساب");
-    }).catch(function (error) {
-      toast("فشل التعديل: " + error.message);
-    });
+      usersRef.child(uid).update({
+        active: activate,
+        updatedAt: Date.now()
+      }).then(function () {
+        toast(activate ? "تم تفعيل الحساب" : "تم تعطيل الحساب");
+      }).catch(function (error) {
+        toast("فشل التعديل: " + error.message);
+      });
+
+      return;
+    }
+
+    if (action === "delete") {
+      var accountNumber = String(user.accountNumber || "");
+
+      if (!confirm(
+        "هل تريد حذف الحساب نهائياً من قاعدة البيانات؟\n\n" +
+        "اسم المستخدم: " + (user.username || "—") +
+        "\nرقم الحساب: " + (accountNumber || "—") +
+        "\n\nلا يمكن التراجع عن حذف سجل الحساب."
+      )) return;
+
+      button.disabled = true;
+
+      /*
+       * إزالة سجل الحساب وفهرس رقم الحساب.
+       * حذف مستخدم Firebase Authentication نفسه يحتاج خادماً موثوقاً
+       * يستخدم Firebase Admin SDK.
+       */
+      usersRef.child(uid).remove().then(function () {
+        if (accountNumber) {
+          return accountNumbersRef.child(accountNumber).remove();
+        }
+      }).then(function () {
+        toast("تم حذف سجل الحساب ورقم الحساب من قاعدة البيانات");
+      }).catch(function (error) {
+        toast("تعذر حذف الحساب: " + error.message);
+      }).finally(function () {
+        button.disabled = false;
+      });
+    }
   });
 
   $("accountForm").addEventListener("submit", function (event) {
@@ -808,8 +695,21 @@ th {
     var accountNumber = $("accountNumber").value.trim();
     var duration = Number($("duration").value);
 
-    if (!username || !accountNumber) {
-      $("formError").textContent = "أدخل اسم المستخدم ورقم الحساب.";
+    $("formError").textContent = "";
+
+    if (!username) {
+      $("formError").textContent = "اكتب اسم المستخدم.";
+      return;
+    }
+
+    if (!uid && $("accountPassword").value.length < 6) {
+      $("formError").textContent =
+        "كلمة المرور يجب أن تكون 6 أحرف أو أرقام على الأقل.";
+      return;
+    }
+
+    if (!/^[0-9]{7}$/.test(accountNumber)) {
+      $("formError").textContent = "رقم الحساب يجب أن يتكون من 7 أرقام.";
       return;
     }
 
@@ -820,16 +720,15 @@ th {
     var end = Math.max(now, oldEnd) + duration * 86400000;
 
     var names = {
-      1: "يوم واحد",
-      7: "أسبوع",
-      30: "شهر (30 يوم)",
-      90: "3 أشهر",
-      365: "سنة"
+      1:"يوم واحد",
+      7:"أسبوع",
+      30:"شهر (30 يوم)",
+      90:"3 أشهر",
+      365:"سنة"
     };
 
     var data = {
       username: username,
-      accountNumber: accountNumber,
       active: $("active").value === "true",
       subscriptionType: duration === 1 ? "day" :
         duration === 7 ? "week" :
@@ -840,34 +739,99 @@ th {
       updatedAt: now
     };
 
-    var deviceId = $("deviceId").value.trim();
-    if (deviceId) data.deviceId = deviceId;
-
     $("saveBtn").disabled = true;
 
-    var task;
-
     if (uid) {
-      task = usersRef.child(uid).update(data);
-    } else {
-      var newRef = usersRef.push();
-      data.uid = newRef.key;
-      data.createdAt = now;
-
-      task = newRef.set(data).then(function () {
-        return db.ref("accountNumbers").child(accountNumber).set(newRef.key);
+      /*
+       * تعديل سجل موجود. لا نغيّر UID أو رقم الحساب أو deviceId القديم.
+       */
+      usersRef.child(uid).update(data).then(function () {
+        closeModal();
+        toast("تم تحديث الحساب وتجديد الاشتراك");
+      }).catch(function (error) {
+        $("formError").textContent = "فشل التعديل: " + error.message;
+      }).finally(function () {
+        $("saveBtn").disabled = false;
       });
+
+      return;
     }
 
-    task.then(function () {
+    /*
+     * إنشاء حساب جديد:
+     * 1. حجز رقم فريد.
+     * 2. إنشاء مستخدم Firebase Authentication.
+     * 3. حفظ سجل الاشتراك تحت UID المستخدم.
+     * 4. ربط رقم الحساب بالـ UID.
+     */
+    var reservedNumber = null;
+    var createdCredential = null;
+    var createdUid = null;
+
+    reserveUniqueNumber(accountNumber, 0).then(function (number) {
+      reservedNumber = number;
+      $("accountNumber").value = number;
+
+      /*
+       * البريد الاصطناعي مبني على رقم الحساب.
+       * يجب أن يستخدم التطبيق الصيغة نفسها عند تسجيل الدخول.
+       */
+      var syntheticEmail = number + "@bok-ped.com";
+
+      return accountAuth.createUserWithEmailAndPassword(
+        syntheticEmail,
+        $("accountPassword").value
+      );
+    }).then(function (credential) {
+      createdCredential = credential;
+      createdUid = credential.user.uid;
+
+      var newData = Object.assign({}, data, {
+        uid: createdUid,
+        accountNumber: reservedNumber,
+        createdAt: Date.now()
+      });
+
+      return usersRef.child(createdUid).set(newData).then(function () {
+        return accountNumbersRef.child(reservedNumber).set(createdUid);
+      });
+    }).then(function () {
+      return accountAuth.signOut();
+    }).then(function () {
       closeModal();
-      toast(uid ? "تم تحديث الحساب وتجديد الاشتراك" : "تم إنشاء الحساب");
+      toast("تم إنشاء الحساب بنجاح. رقم الحساب: " + reservedNumber);
     }).catch(function (error) {
-      $("formError").textContent = "فشل الحفظ: " + error.message;
+      /*
+       * محاولة تنظيف البيانات التي أُنشئت إذا فشلت العملية.
+       */
+      var cleanup = Promise.resolve();
+
+      if (createdUid) {
+        cleanup = cleanup.then(function () {
+          return usersRef.child(createdUid).remove().catch(function () {});
+        });
+      }
+
+      if (reservedNumber) {
+        cleanup = cleanup.then(function () {
+          return releaseReservation(reservedNumber);
+        });
+      }
+
+      cleanup.then(function () {
+        if (accountAuth.currentUser) {
+          return accountAuth.signOut().catch(function () {});
+        }
+      }).then(function () {
+        $("formError").textContent =
+          "تعذر إنشاء الحساب: " + error.message +
+          ". إذا أُنشئ حساب المصادقة بالفعل، فقد يحتاج إلى تنظيف من Firebase Authentication.";
+      });
     }).finally(function () {
       $("saveBtn").disabled = false;
     });
   });
+
 })();
 </script>
 </body>
