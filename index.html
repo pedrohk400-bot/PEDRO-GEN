@@ -19,6 +19,7 @@ body{
 }
 button,input,select{font-family:inherit}
 button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
 .hidden{display:none!important}
 .container{width:min(1200px,100%);margin:auto;padding:20px}
 .card{
@@ -43,8 +44,7 @@ button{cursor:pointer}
   width:100%;padding:12px;color:white;background:#090d18;
   border:1px solid #ffffff18;border-radius:12px;outline:none
 }
-.field input:focus,.search:focus{border-color:#6895ff}
-.field input[readonly]{color:#8fb0ff}
+.field input:focus,.search:focus,.filter:focus{border-color:#6895ff}
 .btn{
   border:0;border-radius:12px;padding:10px 14px;font-weight:700
 }
@@ -66,7 +66,7 @@ button{cursor:pointer}
 .stat-number{margin-top:8px;font-size:30px;font-weight:800}
 .toolbar{display:flex;align-items:center;gap:10px;padding:14px;margin-bottom:12px;flex-wrap:wrap}
 .search{flex:1;min-width:180px}
-.filter{width:auto;max-width:100%}
+.filter{width:auto;min-width:150px;max-width:100%}
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;min-width:800px}
 th,td{
@@ -80,6 +80,25 @@ th{color:#aab7d1;background:#ffffff04}
 .badge-expired{background:#ffbd661a;color:#ffd18d}
 .small-btn{font-size:10px;padding:7px 9px;margin:2px}
 .empty{padding:25px;color:#9ca8c2;text-align:center;font-size:12px}
+.section-note{
+  padding:13px 15px;border-radius:14px;background:#ffffff06;
+  border:1px solid #ffffff0c;margin-bottom:12px
+}
+.latest-grid{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px
+}
+.latest-item{
+  background:#090e1b;border:1px solid #ffffff12;border-radius:15px;
+  padding:13px;min-width:0
+}
+.latest-name{
+  font-size:13px;font-weight:800;overflow-wrap:anywhere
+}
+.latest-number{
+  color:#9ca8c2;font-size:11px;margin-top:7px;overflow-wrap:anywhere
+}
+.latest-date{color:#8fb0ff;font-size:10px;margin-top:8px}
+.latest-status{margin-top:8px}
 .modal-bg{
   position:fixed;inset:0;z-index:10;background:#03050bdc;
   display:grid;place-items:center;padding:15px
@@ -92,12 +111,21 @@ th{color:#aab7d1;background:#ffffff04}
   z-index:20;max-width:90%;padding:12px 16px;border-radius:13px;
   border:1px solid #ffffff20;background:#1b2439;font-size:12px;text-align:center
 }
-@media(max-width:800px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){
+  .latest-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:800px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:520px){
+  .latest-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media(max-width:480px){
   .container{padding:12px}
   .card{padding:14px}
   .stat-number{font-size:25px}
   .brand h1{font-size:17px}
+  .filter{width:100%}
 }
 </style>
 </head>
@@ -128,7 +156,7 @@ th{color:#aab7d1;background:#ffffff04}
         <input id="password" type="password" required autocomplete="current-password">
       </div>
 
-      <button id="loginBtn" class="btn primary full">تسجيل الدخول</button>
+      <button id="loginBtn" type="submit" class="btn primary full">تسجيل الدخول</button>
       <p id="loginError" class="error"></p>
     </form>
   </div>
@@ -157,7 +185,6 @@ th{color:#aab7d1;background:#ffffff04}
       <h2>نظرة عامة</h2>
       <div class="muted">إحصائيات الحسابات المسجلة</div>
     </div>
-    <button id="addBtn" class="btn primary">＋ إضافة حساب</button>
   </div>
 
   <section class="stats">
@@ -181,6 +208,18 @@ th{color:#aab7d1;background:#ffffff04}
 
   <div class="heading">
     <div>
+      <h2>أحدث الحسابات</h2>
+      <div class="muted">آخر 5 حسابات حسب تاريخ الإنشاء</div>
+    </div>
+  </div>
+
+  <section class="card">
+    <div id="latestAccounts" class="latest-grid"></div>
+    <div id="latestEmpty" class="empty hidden">لا توجد حسابات لعرضها.</div>
+  </section>
+
+  <div class="heading">
+    <div>
       <h2>الحسابات</h2>
       <div class="muted">البحث والتفعيل والتعطيل والتجديد والحذف</div>
     </div>
@@ -188,6 +227,17 @@ th{color:#aab7d1;background:#ffffff04}
 
   <div class="toolbar card">
     <input id="search" class="search" placeholder="ابحث بالاسم أو رقم الحساب أو UID">
+
+    <select id="durationFilter" class="filter">
+      <option value="all">كل مدد الاشتراك</option>
+      <option value="1">يوم واحد</option>
+      <option value="7">أسبوع واحد</option>
+      <option value="30">شهر (30 يوم)</option>
+      <option value="90">3 أشهر</option>
+      <option value="365">سنة</option>
+      <option value="unknown">غير محدد</option>
+    </select>
+
     <select id="statusFilter" class="filter">
       <option value="all">كل الحالات</option>
       <option value="active">نشطة</option>
@@ -220,7 +270,7 @@ th{color:#aab7d1;background:#ffffff04}
 
 <div id="modalBg" class="modal-bg hidden">
   <div class="modal card">
-    <h2 id="modalTitle" style="margin-top:0">إضافة حساب</h2>
+    <h2 id="modalTitle" style="margin-top:0">تجديد الاشتراك</h2>
 
     <form id="accountForm">
       <input id="editUid" type="hidden">
@@ -231,23 +281,12 @@ th{color:#aab7d1;background:#ffffff04}
       </div>
 
       <div class="field">
-        <label>رقم الحساب - 7 أرقام عشوائية</label>
-        <div style="display:flex;gap:8px">
-          <input id="accountNumber" required readonly maxlength="7" style="flex:1">
-          <button id="generateBtn" type="button" class="btn soft">🎲 توليد</button>
-        </div>
-        <div class="muted">يتحقق الموقع من عدم استخدام الرقم قبل حفظ الحساب.</div>
-      </div>
-
-      <div id="passwordField" class="field">
-        <label>كلمة مرور التطبيق</label>
-        <input id="accountPassword" type="password" minlength="6"
-          autocomplete="new-password" placeholder="6 أحرف أو أرقام على الأقل">
-        <div class="muted">ستُستخدم كلمة المرور في Firebase Authentication ولا تُحفظ كنص مكشوف في قاعدة البيانات.</div>
+        <label>رقم الحساب</label>
+        <input id="accountNumber" readonly>
       </div>
 
       <div class="field">
-        <label>مدة الاشتراك</label>
+        <label>مدة التجديد</label>
         <select id="duration">
           <option value="1">يوم واحد</option>
           <option value="7">أسبوع</option>
@@ -273,7 +312,7 @@ th{color:#aab7d1;background:#ffffff04}
       <p id="formError" class="error"></p>
 
       <div class="modal-actions">
-        <button id="saveBtn" class="btn primary">حفظ الحساب</button>
+        <button id="saveBtn" type="submit" class="btn primary">حفظ التعديلات</button>
         <button id="cancelBtn" type="button" class="btn soft">إلغاء</button>
       </div>
     </form>
@@ -288,551 +327,493 @@ th{color:#aab7d1;background:#ffffff04}
 <script src="firebase-config.js"></script>
 
 <script>
-(function () {
-  "use strict";
+(function(){
+"use strict";
 
-  if (!window.BOK_PED_FIREBASE_CONFIG) {
-    alert("لم يتم تحميل firebase-config.js");
+if(!window.BOK_PED_FIREBASE_CONFIG){
+  alert("لم يتم تحميل firebase-config.js");
+  return;
+}
+
+firebase.initializeApp(window.BOK_PED_FIREBASE_CONFIG);
+
+var auth=firebase.auth();
+var db=firebase.database();
+var usersRef=db.ref("users");
+var accountNumbersRef=db.ref("accountNumbers");
+
+var users={};
+var listener=null;
+var toastTimer=null;
+var saving=false;
+
+function $(id){
+  return document.getElementById(id);
+}
+
+function toast(message){
+  $("toast").textContent=message;
+  $("toast").classList.remove("hidden");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){
+    $("toast").classList.add("hidden");
+  },3500);
+}
+
+function escapeHtml(value){
+  return String(value==null?"":value).replace(/[&<>"']/g,function(c){
+    return {
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[c];
+  });
+}
+
+function normalizedTimestamp(value){
+  var n=Number(value||0);
+  if(n>0&&n<100000000000)n*=1000;
+  return n;
+}
+
+function expired(user){
+  var end=normalizedTimestamp(user.subscriptionEnd);
+  return end>0&&end<=Date.now();
+}
+
+function status(user){
+  if(expired(user)){
+    return {key:"expired",label:"منتهي",cls:"badge-expired"};
+  }
+  if(user.active===true){
+    return {key:"active",label:"نشط",cls:"badge-active"};
+  }
+  return {key:"disabled",label:"معطّل",cls:"badge-disabled"};
+}
+
+function formatDate(value){
+  var n=normalizedTimestamp(value);
+  if(!n)return "—";
+  var date=new Date(n);
+  if(isNaN(date.getTime()))return "—";
+
+  return new Intl.DateTimeFormat("ar-EG",{
+    year:"numeric",
+    month:"short",
+    day:"numeric",
+    hour:"2-digit",
+    minute:"2-digit"
+  }).format(date);
+}
+
+/*
+ * استنتاج مدة الاشتراك من الحقول المحفوظة.
+ * الحسابات القديمة التي لا تحتوي على معلومات مدة واضحة
+ * تصنّف على أنها غير محددة.
+ */
+function durationDays(user){
+  var type=String(user.subscriptionType||"").toLowerCase();
+  var name=String(user.subscriptionName||"").toLowerCase();
+
+  if(type==="day"||name.indexOf("يوم واحد")!==-1)return 1;
+  if(type==="week"||name.indexOf("أسبوع")!==-1||
+     name.indexOf("اسبوع")!==-1)return 7;
+  if(type==="month"||name.indexOf("شهر")!==-1)return 30;
+
+  if(type==="year"||name.indexOf("سنة")!==-1||
+     name.indexOf("عام")!==-1)return 365;
+
+  if(type==="three_months"||name.indexOf("3 أشهر")!==-1||
+     name.indexOf("ثلاثة أشهر")!==-1)return 90;
+
+  var start=normalizedTimestamp(user.subscriptionStart);
+  var end=normalizedTimestamp(user.subscriptionEnd);
+
+  if(start>0&&end>start){
+    var days=Math.round((end-start)/86400000);
+    if(days>=1&&days<=2)return 1;
+    if(days>=6&&days<=8)return 7;
+    if(days>=28&&days<=32)return 30;
+    if(days>=88&&days<=92)return 90;
+    if(days>=363&&days<=367)return 365;
+  }
+
+  return 0;
+}
+
+function subscriptionName(user){
+  if(user.subscriptionName)return String(user.subscriptionName);
+
+  var days=durationDays(user);
+  var names={
+    1:"يوم واحد",
+    7:"أسبوع واحد",
+    30:"شهر (30 يوم)",
+    90:"3 أشهر",
+    365:"سنة"
+  };
+
+  return names[days]||"غير محدد";
+}
+
+function createdTimestamp(user){
+  return normalizedTimestamp(user.createdAt);
+}
+
+function getAllUsers(){
+  return Object.keys(users).map(function(key){
+    var user=Object.assign({},users[key]||{});
+    user._key=key;
+    return user;
+  });
+}
+
+function renderLatest(all){
+  var latest=all.slice().sort(function(a,b){
+    return createdTimestamp(b)-createdTimestamp(a);
+  }).slice(0,5);
+
+  $("latestAccounts").innerHTML=latest.map(function(u){
+    var s=status(u);
+    var created=createdTimestamp(u);
+
+    return "<div class='latest-item'>"+
+      "<div class='latest-name'>"+
+      escapeHtml(u.username||"بدون اسم")+
+      "</div>"+
+      "<div class='latest-number'>رقم الحساب: "+
+      escapeHtml(u.accountNumber||"—")+
+      "</div>"+
+      "<div class='latest-number'>"+
+      escapeHtml(subscriptionName(u))+
+      "</div>"+
+      "<div class='latest-date'>"+
+      (created?escapeHtml(formatDate(created)):"تاريخ الإنشاء غير متوفر")+
+      "</div>"+
+      "<div class='latest-status'><span class='badge "+s.cls+"'>"+
+      s.label+"</span></div>"+
+      "</div>";
+  }).join("");
+
+  $("latestEmpty").classList.toggle("hidden",latest.length!==0);
+}
+
+function render(){
+  var all=getAllUsers();
+
+  $("total").textContent=all.length;
+
+  $("activeCount").textContent=all.filter(function(u){
+    return u.active===true&&!expired(u);
+  }).length;
+
+  $("disabledCount").textContent=all.filter(function(u){
+    return u.active!==true;
+  }).length;
+
+  $("expiredCount").textContent=all.filter(expired).length;
+
+  renderLatest(all);
+
+  var query=$("search").value.trim().toLowerCase();
+  var filter=$("statusFilter").value;
+  var durationFilter=$("durationFilter").value;
+
+  var rows=all.filter(function(u){
+    var s=status(u);
+
+    var matchesSearch=[
+      u.username,
+      u.accountNumber,
+      u.uid,
+      u._key
+    ].some(function(v){
+      return String(v||"").toLowerCase().indexOf(query)!==-1;
+    });
+
+    var matchesStatus=filter==="all"||filter===s.key;
+
+    var days=durationDays(u);
+    var matchesDuration=durationFilter==="all"||
+      (durationFilter==="unknown"?days===0:
+       days===Number(durationFilter));
+
+    return matchesSearch&&matchesStatus&&matchesDuration;
+  });
+
+  $("usersBody").innerHTML=rows.map(function(u){
+    var s=status(u);
+    var uid=u._key;
+
+    return "<tr>"+
+      "<td><b>"+escapeHtml(u.username||"بدون اسم")+"</b>"+
+      "<div class='muted'>"+escapeHtml(uid)+"</div></td>"+
+
+      "<td>"+escapeHtml(u.accountNumber||"—")+"</td>"+
+      "<td>"+escapeHtml(subscriptionName(u))+"</td>"+
+      "<td>"+escapeHtml(formatDate(u.subscriptionEnd))+"</td>"+
+
+      "<td><span class='badge "+s.cls+"'>"+s.label+"</span></td>"+
+
+      "<td>"+
+      "<button class='btn soft small-btn' data-action='edit' data-uid='"+
+      escapeHtml(uid)+"'>تجديد/تعديل</button>"+
+
+      "<button class='btn "+
+      (u.active===true?"danger":"success")+
+      " small-btn' data-action='toggle' data-uid='"+
+      escapeHtml(uid)+"'>"+
+      (u.active===true?"تعطيل":"تفعيل")+"</button>"+
+
+      "<button class='btn danger small-btn' data-action='delete' data-uid='"+
+      escapeHtml(uid)+"'>حذف</button>"+
+      "</td></tr>";
+  }).join("");
+
+  $("empty").classList.toggle("hidden",rows.length!==0);
+  $("resultCount").textContent=rows.length+" من "+all.length+" حساب";
+}
+
+function startListener(){
+  if(listener)usersRef.off("value",listener);
+
+  listener=function(snapshot){
+    users=snapshot.val()||{};
+    render();
+  };
+
+  usersRef.on("value",listener,function(error){
+    toast("خطأ في قراءة الحسابات: "+error.message);
+  });
+}
+
+function stopListener(){
+  if(listener){
+    usersRef.off("value",listener);
+    listener=null;
+  }
+  users={};
+  render();
+}
+
+function openModal(user,uid){
+  $("accountForm").reset();
+  $("editUid").value=uid||"";
+  $("formError").textContent="";
+  $("modalTitle").textContent="تجديد/تعديل الحساب";
+
+  $("username").value=user.username||"";
+  $("accountNumber").value=user.accountNumber||"";
+  $("active").value=user.active===true?"true":"false";
+
+  var days=durationDays(user);
+  $("duration").value=days?String(days):"30";
+
+  $("modalBg").classList.remove("hidden");
+}
+
+function closeModal(){
+  $("modalBg").classList.add("hidden");
+}
+
+$("loginForm").addEventListener("submit",function(event){
+  event.preventDefault();
+
+  $("loginError").textContent="";
+  $("loginBtn").disabled=true;
+
+  auth.signInWithEmailAndPassword(
+    $("email").value.trim(),
+    $("password").value
+  ).catch(function(error){
+    $("loginError").textContent=error.message;
+  }).finally(function(){
+    $("loginBtn").disabled=false;
+  });
+});
+
+auth.onAuthStateChanged(function(user){
+  if(user){
+    $("loginView").classList.add("hidden");
+    $("appView").classList.remove("hidden");
+    $("adminEmail").textContent=user.email||"مدير النظام";
+    startListener();
+  }else{
+    stopListener();
+    $("appView").classList.add("hidden");
+    $("loginView").classList.remove("hidden");
+  }
+});
+
+$("logoutBtn").addEventListener("click",function(){
+  stopListener();
+  auth.signOut();
+});
+
+$("refreshBtn").addEventListener("click",function(){
+  usersRef.once("value").then(function(snapshot){
+    users=snapshot.val()||{};
+    render();
+    toast("تم تحديث البيانات");
+  }).catch(function(error){
+    toast("فشل التحديث: "+error.message);
+  });
+});
+
+$("search").addEventListener("input",render);
+$("statusFilter").addEventListener("change",render);
+$("durationFilter").addEventListener("change",render);
+$("cancelBtn").addEventListener("click",closeModal);
+
+$("modalBg").addEventListener("click",function(event){
+  if(event.target===$("modalBg"))closeModal();
+});
+
+$("usersBody").addEventListener("click",function(event){
+  var button=event.target.closest("button[data-action]");
+  if(!button)return;
+
+  var uid=button.getAttribute("data-uid");
+  var user=users[uid];
+
+  if(!user)return;
+
+  var action=button.getAttribute("data-action");
+
+  if(action==="edit"){
+    openModal(user,uid);
     return;
   }
 
-  firebase.initializeApp(window.BOK_PED_FIREBASE_CONFIG);
+  if(action==="toggle"){
+    var activate=user.active!==true;
 
-  var auth = firebase.auth();
-  var db = firebase.database();
-  var usersRef = db.ref("users");
-  var accountNumbersRef = db.ref("accountNumbers");
+    if(!confirm((activate?"تفعيل":"تعطيل")+
+      " الحساب "+(user.username||uid)+"؟"))return;
+
+    button.disabled=true;
+
+    usersRef.child(uid).update({
+      active:activate,
+      updatedAt:Date.now()
+    }).then(function(){
+      toast(activate?"تم تفعيل الحساب":"تم تعطيل الحساب");
+    }).catch(function(error){
+      toast("فشل التعديل: "+error.message);
+    }).finally(function(){
+      button.disabled=false;
+    });
+
+    return;
+  }
+
+  if(action==="delete"){
+    var accountNumber=String(user.accountNumber||"");
+
+    if(!confirm(
+      "هل تريد حذف سجل الحساب نهائياً من قاعدة البيانات؟\n\n"+
+      "اسم المستخدم: "+(user.username||"—")+
+      "\nرقم الحساب: "+(accountNumber||"—")+
+      "\n\nلن يؤدي ذلك إلى حذف مستخدم Firebase Authentication نفسه."
+    ))return;
+
+    button.disabled=true;
+
+    var updates={};
+    updates["users/"+uid]=null;
+
+    if(accountNumber){
+      updates["accountNumbers/"+accountNumber]=null;
+    }
+
+    db.ref().update(updates).then(function(){
+      toast("تم حذف سجل الحساب ورقم الحساب");
+    }).catch(function(error){
+      toast("تعذر حذف الحساب: "+error.message);
+    }).finally(function(){
+      button.disabled=false;
+    });
+  }
+});
+
+$("accountForm").addEventListener("submit",function(event){
+  event.preventDefault();
+
+  if(saving)return;
+
+  var uid=$("editUid").value;
+  var username=$("username").value.trim();
+  var duration=Number($("duration").value);
+  var old=users[uid];
+
+  $("formError").textContent="";
+
+  if(!uid||!old){
+    $("formError").textContent="الحساب غير موجود. حدّث الصفحة وحاول مجدداً.";
+    return;
+  }
+
+  if(!username){
+    $("formError").textContent="اكتب اسم المستخدم.";
+    return;
+  }
+
+  var allowed=[1,7,30,90,365];
+
+  if(allowed.indexOf(duration)===-1){
+    $("formError").textContent="اختر مدة اشتراك صحيحة.";
+    return;
+  }
+
+  var now=Date.now();
+  var oldEnd=normalizedTimestamp(old.subscriptionEnd);
 
   /*
-   * تطبيق Firebase ثانوي لإنشاء حسابات المستخدمين
-   * دون إخراج المدير من جلسة لوحة الإدارة.
+   * إذا كان الاشتراك سارياً، تضاف المدة إلى نهايته.
+   * إذا انتهى، يبدأ التجديد من الوقت الحالي.
    */
-  var accountAuthApp;
-  try {
-    accountAuthApp = firebase.app("BOK_PED_ACCOUNT_AUTH");
-  } catch (e) {
-    accountAuthApp = firebase.initializeApp(
-      window.BOK_PED_FIREBASE_CONFIG,
-      "BOK_PED_ACCOUNT_AUTH"
-    );
-  }
+  var end=Math.max(now,oldEnd)+duration*86400000;
 
-  var accountAuth = accountAuthApp.auth();
-  var users = {};
-  var listener = null;
-  var toastTimer = null;
+  var names={
+    1:"يوم واحد",
+    7:"أسبوع واحد",
+    30:"شهر (30 يوم)",
+    90:"3 أشهر",
+    365:"سنة"
+  };
 
-  function $(id) {
-    return document.getElementById(id);
-  }
+  var data={
+    username:username,
+    active:$("active").value==="true",
+    subscriptionType:
+      duration===1?"day":
+      duration===7?"week":
+      duration===30?"month":
+      duration===90?"three_months":"year",
+    subscriptionName:names[duration],
+    subscriptionStart:now,
+    subscriptionEnd:end,
+    updatedAt:now
+  };
 
-  function toast(message) {
-    $("toast").textContent = message;
-    $("toast").classList.remove("hidden");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () {
-      $("toast").classList.add("hidden");
-    }, 3500);
-  }
+  saving=true;
+  $("saveBtn").disabled=true;
 
-  function escapeHtml(value) {
-    return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
-      return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      }[c];
-    });
-  }
-
-  function normalizedTimestamp(value) {
-    var n = Number(value || 0);
-    if (n > 0 && n < 100000000000) n *= 1000;
-    return n;
-  }
-
-  function expired(user) {
-    var end = normalizedTimestamp(user.subscriptionEnd);
-    return end > 0 && end <= Date.now();
-  }
-
-  function status(user) {
-    if (expired(user)) {
-      return {key:"expired",label:"منتهي",cls:"badge-expired"};
-    }
-
-    if (user.active === true) {
-      return {key:"active",label:"نشط",cls:"badge-active"};
-    }
-
-    return {key:"disabled",label:"معطّل",cls:"badge-disabled"};
-  }
-
-  function formatDate(value) {
-    var n = normalizedTimestamp(value);
-    if (!n) return "—";
-
-    var date = new Date(n);
-    if (isNaN(date.getTime())) return "—";
-
-    return new Intl.DateTimeFormat("ar-EG", {
-      year:"numeric",
-      month:"short",
-      day:"numeric",
-      hour:"2-digit",
-      minute:"2-digit"
-    }).format(date);
-  }
-
-  function subscriptionName(user) {
-    if (user.subscriptionName) return String(user.subscriptionName);
-
-    var names = {day:"يوم واحد",week:"أسبوع",month:"شهر"};
-    return names[user.subscriptionType] || "غير محدد";
-  }
-
-  function render() {
-    var all = Object.keys(users).map(function (key) {
-      var user = Object.assign({}, users[key] || {});
-      user._key = key;
-      return user;
-    });
-
-    $("total").textContent = all.length;
-
-    $("activeCount").textContent = all.filter(function (u) {
-      return u.active === true && !expired(u);
-    }).length;
-
-    $("disabledCount").textContent = all.filter(function (u) {
-      return u.active !== true;
-    }).length;
-
-    $("expiredCount").textContent = all.filter(expired).length;
-
-    var query = $("search").value.trim().toLowerCase();
-    var filter = $("statusFilter").value;
-
-    var rows = all.filter(function (u) {
-      var s = status(u);
-      var matches = [
-        u.username,
-        u.accountNumber,
-        u.uid,
-        u._key
-      ].some(function (v) {
-        return String(v || "").toLowerCase().indexOf(query) !== -1;
-      });
-
-      return matches && (filter === "all" || filter === s.key);
-    });
-
-    $("usersBody").innerHTML = rows.map(function (u) {
-      var s = status(u);
-      var uid = u._key;
-
-      return "<tr>" +
-        "<td><b>" + escapeHtml(u.username || "بدون اسم") + "</b>" +
-        "<div class='muted'>" + escapeHtml(uid) + "</div></td>" +
-
-        "<td>" + escapeHtml(u.accountNumber || "—") + "</td>" +
-        "<td>" + escapeHtml(subscriptionName(u)) + "</td>" +
-        "<td>" + escapeHtml(formatDate(u.subscriptionEnd)) + "</td>" +
-
-        "<td><span class='badge " + s.cls + "'>" + s.label + "</span></td>" +
-
-        "<td>" +
-        "<button class='btn soft small-btn' data-action='edit' data-uid='" +
-        escapeHtml(uid) + "'>تجديد/تعديل</button>" +
-
-        "<button class='btn " + (u.active === true ? "danger" : "success") +
-        " small-btn' data-action='toggle' data-uid='" + escapeHtml(uid) + "'>" +
-        (u.active === true ? "تعطيل" : "تفعيل") + "</button>" +
-
-        "<button class='btn danger small-btn' data-action='delete' data-uid='" +
-        escapeHtml(uid) + "'>حذف</button>" +
-        "</td></tr>";
-    }).join("");
-
-    $("empty").classList.toggle("hidden", rows.length !== 0);
-    $("resultCount").textContent = rows.length + " من " + all.length + " حساب";
-  }
-
-  function startListener() {
-    if (listener) usersRef.off("value", listener);
-
-    listener = function (snapshot) {
-      users = snapshot.val() || {};
-      render();
-    };
-
-    usersRef.on("value", listener, function (error) {
-      toast("خطأ في قراءة الحسابات: " + error.message);
-    });
-  }
-
-  function stopListener() {
-    if (listener) {
-      usersRef.off("value", listener);
-      listener = null;
-    }
-    users = {};
-  }
-
-  function randomAccountNumber() {
-    return String(Math.floor(1000000 + Math.random() * 9000000));
-  }
-
-  function generateNumber() {
-    $("accountNumber").value = randomAccountNumber();
-  }
-
-  /*
-   * حجز الرقم بعملية transaction.
-   * لا يمكن لحسابين حجز الرقم نفسه بنجاح في الوقت ذاته.
-   */
-  function reserveUniqueNumber(preferred, attempts) {
-    attempts = attempts || 0;
-
-    if (attempts >= 50) {
-      return Promise.reject(
-        new Error("تعذر إيجاد رقم حساب متاح. حاول مرة أخرى.")
-      );
-    }
-
-    var number = preferred || randomAccountNumber();
-    var reservation = "PENDING_" + auth.currentUser.uid;
-
-    return accountNumbersRef.child(number).transaction(
-      function (current) {
-        if (current === null) return reservation;
-        return;
-      },
-      undefined,
-      false
-    ).then(function (result) {
-      if (result.committed) return number;
-
-      $("accountNumber").value = randomAccountNumber();
-      return reserveUniqueNumber($("accountNumber").value, attempts + 1);
-    });
-  }
-
-  function releaseReservation(number) {
-    if (!number) return Promise.resolve();
-
-    return accountNumbersRef.child(number).transaction(
-      function (current) {
-        if (typeof current === "string" &&
-            current.indexOf("PENDING_") === 0) {
-          return null;
-        }
-        return;
-      },
-      undefined,
-      false
-    ).catch(function () {});
-  }
-
-  function openModal(user, uid) {
-    $("accountForm").reset();
-    $("editUid").value = uid || "";
-    $("formError").textContent = "";
-
-    $("modalTitle").textContent = uid ?
-      "تعديل وتجديد الاشتراك" : "إضافة حساب جديد";
-
-    $("passwordField").classList.toggle("hidden", !!uid);
-    $("accountPassword").required = !uid;
-    $("generateBtn").classList.toggle("hidden", !!uid);
-    $("accountNumber").readOnly = true;
-
-    if (user) {
-      $("username").value = user.username || "";
-      $("accountNumber").value = user.accountNumber || "";
-      $("active").value = user.active === true ? "true" : "false";
-    } else {
-      $("active").value = "true";
-      generateNumber();
-    }
-
-    $("modalBg").classList.remove("hidden");
-  }
-
-  function closeModal() {
-    $("modalBg").classList.add("hidden");
-  }
-
-  $("loginForm").addEventListener("submit", function (event) {
-    event.preventDefault();
-    $("loginError").textContent = "";
-    $("loginBtn").disabled = true;
-
-    auth.signInWithEmailAndPassword(
-      $("email").value.trim(),
-      $("password").value
-    ).catch(function (error) {
-      $("loginError").textContent = error.message;
-    }).finally(function () {
-      $("loginBtn").disabled = false;
-    });
+  usersRef.child(uid).update(data).then(function(){
+    closeModal();
+    toast("تم تحديث الحساب وتجديد الاشتراك");
+  }).catch(function(error){
+    $("formError").textContent="فشل الحفظ: "+error.message;
+  }).finally(function(){
+    saving=false;
+    $("saveBtn").disabled=false;
   });
-
-  auth.onAuthStateChanged(function (user) {
-    if (user) {
-      $("loginView").classList.add("hidden");
-      $("appView").classList.remove("hidden");
-      $("adminEmail").textContent = user.email || "مدير النظام";
-      startListener();
-    } else {
-      stopListener();
-      $("appView").classList.add("hidden");
-      $("loginView").classList.remove("hidden");
-    }
-  });
-
-  $("logoutBtn").addEventListener("click", function () {
-    stopListener();
-    auth.signOut();
-  });
-
-  $("refreshBtn").addEventListener("click", function () {
-    usersRef.once("value").then(function (snapshot) {
-      users = snapshot.val() || {};
-      render();
-      toast("تم تحديث البيانات");
-    }).catch(function (error) {
-      toast("فشل التحديث: " + error.message);
-    });
-  });
-
-  $("search").addEventListener("input", render);
-  $("statusFilter").addEventListener("change", render);
-
-  $("addBtn").addEventListener("click", function () {
-    openModal(null, null);
-  });
-
-  $("generateBtn").addEventListener("click", generateNumber);
-  $("cancelBtn").addEventListener("click", closeModal);
-
-  $("modalBg").addEventListener("click", function (event) {
-    if (event.target === $("modalBg")) closeModal();
-  });
-
-  $("usersBody").addEventListener("click", function (event) {
-    var button = event.target.closest("button[data-action]");
-    if (!button) return;
-
-    var uid = button.getAttribute("data-uid");
-    var user = users[uid];
-
-    if (!user) return;
-
-    var action = button.getAttribute("data-action");
-
-    if (action === "edit") {
-      openModal(user, uid);
-      return;
-    }
-
-    if (action === "toggle") {
-      var activate = user.active !== true;
-
-      if (!confirm((activate ? "تفعيل" : "تعطيل") +
-          " الحساب " + (user.username || uid) + "؟")) return;
-
-      usersRef.child(uid).update({
-        active: activate,
-        updatedAt: Date.now()
-      }).then(function () {
-        toast(activate ? "تم تفعيل الحساب" : "تم تعطيل الحساب");
-      }).catch(function (error) {
-        toast("فشل التعديل: " + error.message);
-      });
-
-      return;
-    }
-
-    if (action === "delete") {
-      var accountNumber = String(user.accountNumber || "");
-
-      if (!confirm(
-        "هل تريد حذف الحساب نهائياً من قاعدة البيانات؟\n\n" +
-        "اسم المستخدم: " + (user.username || "—") +
-        "\nرقم الحساب: " + (accountNumber || "—") +
-        "\n\nلا يمكن التراجع عن حذف سجل الحساب."
-      )) return;
-
-      button.disabled = true;
-
-      /*
-       * إزالة سجل الحساب وفهرس رقم الحساب.
-       * حذف مستخدم Firebase Authentication نفسه يحتاج خادماً موثوقاً
-       * يستخدم Firebase Admin SDK.
-       */
-      usersRef.child(uid).remove().then(function () {
-        if (accountNumber) {
-          return accountNumbersRef.child(accountNumber).remove();
-        }
-      }).then(function () {
-        toast("تم حذف سجل الحساب ورقم الحساب من قاعدة البيانات");
-      }).catch(function (error) {
-        toast("تعذر حذف الحساب: " + error.message);
-      }).finally(function () {
-        button.disabled = false;
-      });
-    }
-  });
-
-  $("accountForm").addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    var uid = $("editUid").value;
-    var username = $("username").value.trim();
-    var accountNumber = $("accountNumber").value.trim();
-    var duration = Number($("duration").value);
-
-    $("formError").textContent = "";
-
-    if (!username) {
-      $("formError").textContent = "اكتب اسم المستخدم.";
-      return;
-    }
-
-    if (!uid && $("accountPassword").value.length < 6) {
-      $("formError").textContent =
-        "كلمة المرور يجب أن تكون 6 أحرف أو أرقام على الأقل.";
-      return;
-    }
-
-    if (!/^[0-9]{7}$/.test(accountNumber)) {
-      $("formError").textContent = "رقم الحساب يجب أن يتكون من 7 أرقام.";
-      return;
-    }
-
-    var now = Date.now();
-    var old = uid ? users[uid] : null;
-    var oldEnd = old ? normalizedTimestamp(old.subscriptionEnd) : 0;
-    var start = now;
-    var end = Math.max(now, oldEnd) + duration * 86400000;
-
-    var names = {
-      1:"يوم واحد",
-      7:"أسبوع",
-      30:"شهر (30 يوم)",
-      90:"3 أشهر",
-      365:"سنة"
-    };
-
-    var data = {
-      username: username,
-      active: $("active").value === "true",
-      subscriptionType: duration === 1 ? "day" :
-        duration === 7 ? "week" :
-        duration === 30 ? "month" : "custom",
-      subscriptionName: names[duration] || duration + " يوم",
-      subscriptionStart: start,
-      subscriptionEnd: end,
-      updatedAt: now
-    };
-
-    $("saveBtn").disabled = true;
-
-    if (uid) {
-      /*
-       * تعديل سجل موجود. لا نغيّر UID أو رقم الحساب أو deviceId القديم.
-       */
-      usersRef.child(uid).update(data).then(function () {
-        closeModal();
-        toast("تم تحديث الحساب وتجديد الاشتراك");
-      }).catch(function (error) {
-        $("formError").textContent = "فشل التعديل: " + error.message;
-      }).finally(function () {
-        $("saveBtn").disabled = false;
-      });
-
-      return;
-    }
-
-    /*
-     * إنشاء حساب جديد:
-     * 1. حجز رقم فريد.
-     * 2. إنشاء مستخدم Firebase Authentication.
-     * 3. حفظ سجل الاشتراك تحت UID المستخدم.
-     * 4. ربط رقم الحساب بالـ UID.
-     */
-    var reservedNumber = null;
-    var createdCredential = null;
-    var createdUid = null;
-
-    reserveUniqueNumber(accountNumber, 0).then(function (number) {
-      reservedNumber = number;
-      $("accountNumber").value = number;
-
-      /*
-       * البريد الاصطناعي مبني على رقم الحساب.
-       * يجب أن يستخدم التطبيق الصيغة نفسها عند تسجيل الدخول.
-       */
-      var syntheticEmail = number + "@bok-ped.com";
-
-      return accountAuth.createUserWithEmailAndPassword(
-        syntheticEmail,
-        $("accountPassword").value
-      );
-    }).then(function (credential) {
-      createdCredential = credential;
-      createdUid = credential.user.uid;
-
-      var newData = Object.assign({}, data, {
-        uid: createdUid,
-        accountNumber: reservedNumber,
-        createdAt: Date.now()
-      });
-
-      return usersRef.child(createdUid).set(newData).then(function () {
-        return accountNumbersRef.child(reservedNumber).set(createdUid);
-      });
-    }).then(function () {
-      return accountAuth.signOut();
-    }).then(function () {
-      closeModal();
-      toast("تم إنشاء الحساب بنجاح. رقم الحساب: " + reservedNumber);
-    }).catch(function (error) {
-      /*
-       * محاولة تنظيف البيانات التي أُنشئت إذا فشلت العملية.
-       */
-      var cleanup = Promise.resolve();
-
-      if (createdUid) {
-        cleanup = cleanup.then(function () {
-          return usersRef.child(createdUid).remove().catch(function () {});
-        });
-      }
-
-      if (reservedNumber) {
-        cleanup = cleanup.then(function () {
-          return releaseReservation(reservedNumber);
-        });
-      }
-
-      cleanup.then(function () {
-        if (accountAuth.currentUser) {
-          return accountAuth.signOut().catch(function () {});
-        }
-      }).then(function () {
-        $("formError").textContent =
-          "تعذر إنشاء الحساب: " + error.message +
-          ". إذا أُنشئ حساب المصادقة بالفعل، فقد يحتاج إلى تنظيف من Firebase Authentication.";
-      });
-    }).finally(function () {
-      $("saveBtn").disabled = false;
-    });
-  });
+});
 
 })();
 </script>
+
 </body>
 </html>
