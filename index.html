@@ -4,12 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080b14">
+
 <title>BOK-PED PRO | لوحة الإدارة</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Cairo,Arial,sans-serif;
@@ -17,11 +19,18 @@ body{
   background:radial-gradient(circle at top right,#172c50,transparent 40%),#080b14;
   min-height:100vh
 }
+
 button,input,select{font-family:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.5;cursor:not-allowed}
 .hidden{display:none!important}
-.container{width:min(1200px,100%);margin:auto;padding:20px}
+
+.container{
+  width:min(1200px,100%);
+  margin:auto;
+  padding:20px
+}
+
 .card{
   background:rgba(20,26,42,.88);
   border:1px solid rgba(255,255,255,.09);
@@ -29,97 +38,285 @@ button:disabled{opacity:.5;cursor:not-allowed}
   padding:20px;
   box-shadow:0 15px 45px rgba(0,0,0,.22)
 }
+
 .brand{display:flex;align-items:center;gap:12px}
+
 .logo{
-  width:48px;height:48px;display:grid;place-items:center;
-  border-radius:16px;background:linear-gradient(135deg,#76a2ff,#315bd0);
-  font-size:18px;font-weight:800
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  border-radius:16px;
+  background:linear-gradient(135deg,#76a2ff,#315bd0);
+  font-size:18px;
+  font-weight:800
 }
+
 .brand h1{margin:0;font-size:21px}
-.muted{color:#9ca8c2;font-size:12px;line-height:1.8}
+
+.muted{
+  color:#9ca8c2;
+  font-size:12px;
+  line-height:1.8
+}
+
 .login{width:min(430px,100%);margin:8vh auto}
+
 .field{margin:14px 0}
-.field label{display:block;margin-bottom:7px;color:#bbc6df;font-size:12px}
-.field input,.field select,.search,.filter{
-  width:100%;padding:12px;color:white;background:#090d18;
-  border:1px solid #ffffff18;border-radius:12px;outline:none
+
+.field label{
+  display:block;
+  margin-bottom:7px;
+  color:#bbc6df;
+  font-size:12px
 }
-.field input:focus,.search:focus,.filter:focus{border-color:#6895ff}
+
+.field input,
+.field select,
+.search,
+.filter{
+  width:100%;
+  padding:12px;
+  color:white;
+  background:#090d18;
+  border:1px solid #ffffff18;
+  border-radius:12px;
+  outline:none
+}
+
+.field input:focus,
+.field select:focus,
+.search:focus,
+.filter:focus{
+  border-color:#6895ff
+}
+
+select option{background:#090d18;color:white}
+
 .btn{
-  border:0;border-radius:12px;padding:10px 14px;font-weight:700
+  border:0;
+  border-radius:12px;
+  padding:10px 14px;
+  font-weight:700
 }
-.primary{color:white;background:linear-gradient(135deg,#6595ff,#3a63df)}
-.soft{color:white;background:#ffffff0b;border:1px solid #ffffff18}
-.danger{color:#ff9baa;background:#ff647719;border:1px solid #ff647740}
-.success{color:#67e5b5;background:#35d49a19;border:1px solid #35d49a40}
+
+.primary{
+  color:white;
+  background:linear-gradient(135deg,#6595ff,#3a63df)
+}
+
+.soft{
+  color:white;
+  background:#ffffff0b;
+  border:1px solid #ffffff18
+}
+
+.danger{
+  color:#ff9baa;
+  background:#ff647719;
+  border:1px solid #ff647740
+}
+
+.success{
+  color:#67e5b5;
+  background:#35d49a19;
+  border:1px solid #35d49a40
+}
+
 .full{width:100%}
-.error{color:#ff8c9e;font-size:12px;overflow-wrap:anywhere}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+.error{
+  color:#ff8c9e;
+  font-size:12px;
+  overflow-wrap:anywhere
+}
+
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap
+}
+
+.actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap
+}
+
 .heading{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;margin:26px 0 14px;flex-wrap:wrap
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin:26px 0 14px;
+  flex-wrap:wrap
 }
+
 .heading h2{margin:0;font-size:20px}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.stat-label{color:#9ca8c2;font-size:12px}
-.stat-number{margin-top:8px;font-size:30px;font-weight:800}
-.toolbar{display:flex;align-items:center;gap:10px;padding:14px;margin-bottom:12px;flex-wrap:wrap}
-.search{flex:1;min-width:180px}
-.filter{width:auto;min-width:150px;max-width:100%}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:800px}
-th,td{
-  padding:14px;text-align:right;border-bottom:1px solid #ffffff12;
-  font-size:12px;white-space:nowrap
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px
 }
+
+.stat-label{color:#9ca8c2;font-size:12px}
+
+.stat-number{
+  margin-top:8px;
+  font-size:30px;
+  font-weight:800
+}
+
+.toolbar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px;
+  margin-bottom:12px;
+  flex-wrap:wrap
+}
+
+.search{flex:1;min-width:180px}
+
+.filter{
+  width:auto;
+  min-width:150px;
+  max-width:100%
+}
+
+.table-wrap{overflow-x:auto}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:800px
+}
+
+th,td{
+  padding:14px;
+  text-align:right;
+  border-bottom:1px solid #ffffff12;
+  font-size:12px;
+  white-space:nowrap
+}
+
 th{color:#aab7d1;background:#ffffff04}
-.badge{display:inline-block;border-radius:20px;padding:5px 9px;font-size:10px;font-weight:700}
+
+.badge{
+  display:inline-block;
+  border-radius:20px;
+  padding:5px 9px;
+  font-size:10px;
+  font-weight:700
+}
+
 .badge-active{background:#35d49a1a;color:#68e5b5}
 .badge-disabled{background:#ff64771a;color:#ff9baa}
 .badge-expired{background:#ffbd661a;color:#ffd18d}
-.small-btn{font-size:10px;padding:7px 9px;margin:2px}
-.empty{padding:25px;color:#9ca8c2;text-align:center;font-size:12px}
-.section-note{
-  padding:13px 15px;border-radius:14px;background:#ffffff06;
-  border:1px solid #ffffff0c;margin-bottom:12px
+
+.small-btn{
+  font-size:10px;
+  padding:7px 9px;
+  margin:2px
 }
+
+.empty{
+  padding:25px;
+  color:#9ca8c2;
+  text-align:center;
+  font-size:12px
+}
+
 .latest-grid{
-  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:10px
 }
+
 .latest-item{
-  background:#090e1b;border:1px solid #ffffff12;border-radius:15px;
-  padding:13px;min-width:0
+  background:#090e1b;
+  border:1px solid #ffffff12;
+  border-radius:15px;
+  padding:13px;
+  min-width:0
 }
+
 .latest-name{
-  font-size:13px;font-weight:800;overflow-wrap:anywhere
+  font-size:13px;
+  font-weight:800;
+  overflow-wrap:anywhere
 }
+
 .latest-number{
-  color:#9ca8c2;font-size:11px;margin-top:7px;overflow-wrap:anywhere
+  color:#9ca8c2;
+  font-size:11px;
+  margin-top:7px;
+  overflow-wrap:anywhere
 }
-.latest-date{color:#8fb0ff;font-size:10px;margin-top:8px}
+
+.latest-date{
+  color:#8fb0ff;
+  font-size:10px;
+  margin-top:8px
+}
+
 .latest-status{margin-top:8px}
+
 .modal-bg{
-  position:fixed;inset:0;z-index:10;background:#03050bdc;
-  display:grid;place-items:center;padding:15px
+  position:fixed;
+  inset:0;
+  z-index:10;
+  background:#03050bdc;
+  display:grid;
+  place-items:center;
+  padding:15px
 }
-.modal{width:min(520px,100%);max-height:92vh;overflow:auto}
-.modal-actions{display:flex;gap:8px;margin-top:16px}
+
+.modal{
+  width:min(520px,100%);
+  max-height:92vh;
+  overflow:auto
+}
+
+.modal-actions{
+  display:flex;
+  gap:8px;
+  margin-top:16px
+}
+
 .modal-actions button{flex:1}
+
 .toast{
-  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
-  z-index:20;max-width:90%;padding:12px 16px;border-radius:13px;
-  border:1px solid #ffffff20;background:#1b2439;font-size:12px;text-align:center
+  position:fixed;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:20;
+  max-width:90%;
+  padding:12px 16px;
+  border-radius:13px;
+  border:1px solid #ffffff20;
+  background:#1b2439;
+  font-size:12px;
+  text-align:center
 }
+
 @media(max-width:900px){
   .latest-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+
 @media(max-width:800px){
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
 @media(max-width:520px){
   .latest-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
 @media(max-width:480px){
   .container{padding:12px}
   .card{padding:14px}
@@ -132,8 +329,11 @@ th{color:#aab7d1;background:#ffffff04}
 
 <body>
 
+<!-- LOGIN -->
+
 <section id="loginView" class="container">
   <div class="login card">
+
     <div class="brand">
       <div class="logo">BP</div>
       <div>
@@ -143,9 +343,13 @@ th{color:#aab7d1;background:#ffffff04}
     </div>
 
     <h2 style="margin-top:25px">تسجيل دخول المدير</h2>
-    <p class="muted">استخدم حساب المدير المسجل في Firebase Authentication.</p>
+
+    <p class="muted">
+      استخدم البريد الإلكتروني وكلمة المرور المرتبطين بحساب المدير.
+    </p>
 
     <form id="loginForm">
+
       <div class="field">
         <label>البريد الإلكتروني</label>
         <input id="email" type="email" required autocomplete="username">
@@ -156,15 +360,23 @@ th{color:#aab7d1;background:#ffffff04}
         <input id="password" type="password" required autocomplete="current-password">
       </div>
 
-      <button id="loginBtn" type="submit" class="btn primary full">تسجيل الدخول</button>
+      <button id="loginBtn" type="submit" class="btn primary full">
+        تسجيل الدخول
+      </button>
+
       <p id="loginError" class="error"></p>
+
     </form>
   </div>
 </section>
 
+
+<!-- ADMIN PANEL -->
+
 <main id="appView" class="container hidden">
 
   <header class="top">
+
     <div class="brand">
       <div class="logo">BP</div>
       <div>
@@ -178,7 +390,9 @@ th{color:#aab7d1;background:#ffffff04}
       <button id="refreshBtn" class="btn soft">↻ تحديث</button>
       <button id="logoutBtn" class="btn danger">خروج</button>
     </div>
+
   </header>
+
 
   <div class="heading">
     <div>
@@ -187,52 +401,66 @@ th{color:#aab7d1;background:#ffffff04}
     </div>
   </div>
 
+
   <section class="stats">
+
     <div class="card">
       <div class="stat-label">إجمالي الحسابات</div>
       <div id="total" class="stat-number">0</div>
     </div>
+
     <div class="card">
       <div class="stat-label">الحسابات النشطة</div>
       <div id="activeCount" class="stat-number">0</div>
     </div>
+
     <div class="card">
       <div class="stat-label">الحسابات المعطلة</div>
       <div id="disabledCount" class="stat-number">0</div>
     </div>
+
     <div class="card">
       <div class="stat-label">الاشتراكات المنتهية</div>
       <div id="expiredCount" class="stat-number">0</div>
     </div>
+
   </section>
+
 
   <div class="heading">
     <div>
       <h2>أحدث الحسابات</h2>
-      <div class="muted">آخر 5 حسابات حسب تاريخ الإنشاء</div>
+      <div class="muted">آخر خمسة حسابات حسب تاريخ الإنشاء</div>
     </div>
   </div>
+
 
   <section class="card">
     <div id="latestAccounts" class="latest-grid"></div>
     <div id="latestEmpty" class="empty hidden">لا توجد حسابات لعرضها.</div>
   </section>
 
+
   <div class="heading">
     <div>
       <h2>الحسابات</h2>
-      <div class="muted">البحث والتفعيل والتعطيل والتجديد والحذف</div>
+      <div class="muted">إدارة الحسابات والاشتراكات</div>
     </div>
   </div>
 
+
   <div class="toolbar card">
-    <input id="search" class="search" placeholder="ابحث بالاسم أو رقم الحساب أو UID">
+
+    <input
+      id="search"
+      class="search"
+      placeholder="ابحث بالاسم أو رقم الحساب أو UID">
 
     <select id="durationFilter" class="filter">
       <option value="all">كل مدد الاشتراك</option>
       <option value="1">يوم واحد</option>
       <option value="7">أسبوع واحد</option>
-      <option value="30">شهر (30 يوم)</option>
+      <option value="30">شهر</option>
       <option value="90">3 أشهر</option>
       <option value="365">سنة</option>
       <option value="unknown">غير محدد</option>
@@ -244,9 +472,12 @@ th{color:#aab7d1;background:#ffffff04}
       <option value="disabled">معطلة</option>
       <option value="expired">منتهية</option>
     </select>
+
   </div>
 
+
   <section class="card" style="padding:0;overflow:hidden">
+
     <div class="table-wrap">
       <table>
         <thead>
@@ -259,20 +490,34 @@ th{color:#aab7d1;background:#ffffff04}
             <th>الإجراءات</th>
           </tr>
         </thead>
+
         <tbody id="usersBody"></tbody>
       </table>
     </div>
-    <div id="empty" class="empty hidden">لا توجد حسابات مطابقة.</div>
+
+    <div id="empty" class="empty hidden">
+      لا توجد حسابات مطابقة.
+    </div>
+
     <div id="resultCount" class="muted" style="padding:13px"></div>
+
   </section>
 
 </main>
 
+
+<!-- EDIT MODAL -->
+
 <div id="modalBg" class="modal-bg hidden">
+
   <div class="modal card">
-    <h2 id="modalTitle" style="margin-top:0">تجديد الاشتراك</h2>
+
+    <h2 id="modalTitle" style="margin-top:0">
+      تجديد الاشتراك
+    </h2>
 
     <form id="accountForm">
+
       <input id="editUid" type="hidden">
 
       <div class="field">
@@ -290,7 +535,7 @@ th{color:#aab7d1;background:#ffffff04}
         <select id="duration">
           <option value="1">يوم واحد</option>
           <option value="7">أسبوع</option>
-          <option value="30" selected>شهر (30 يوم)</option>
+          <option value="30" selected>شهر</option>
           <option value="90">3 أشهر</option>
           <option value="365">سنة</option>
         </select>
@@ -305,63 +550,73 @@ th{color:#aab7d1;background:#ffffff04}
       </div>
 
       <p class="muted">
-        التجديد يضيف المدة الجديدة إلى نهاية الاشتراك الحالي إن كان سارياً،
+        التجديد يضيف المدة إلى نهاية الاشتراك الحالي إن كان سارياً،
         وإلا يبدأ من الوقت الحالي.
       </p>
 
       <p id="formError" class="error"></p>
 
       <div class="modal-actions">
-        <button id="saveBtn" type="submit" class="btn primary">حفظ التعديلات</button>
-        <button id="cancelBtn" type="button" class="btn soft">إلغاء</button>
+        <button id="saveBtn" type="submit" class="btn primary">
+          حفظ التعديلات
+        </button>
+
+        <button id="cancelBtn" type="button" class="btn soft">
+          إلغاء
+        </button>
       </div>
+
     </form>
+
   </div>
 </div>
 
+
 <div id="toast" class="toast hidden"></div>
+
+
+<!-- FIREBASE -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
 <script src="firebase-config.js"></script>
 
+
 <script>
 (function(){
 "use strict";
 
+var ADMIN_UID = "gL1GGUJ7FWS4zRZmzdaf60qqHMD3";
+var ADMIN_EMAIL = "website-reader@bok-ped.com";
+
 if(!window.BOK_PED_FIREBASE_CONFIG){
-  alert("لم يتم تحميل firebase-config.js");
+  alert("لم يتم تحميل ملف firebase-config.js");
   return;
 }
 
-firebase.initializeApp(window.BOK_PED_FIREBASE_CONFIG);
+if(!firebase.apps.length){
+  firebase.initializeApp(window.BOK_PED_FIREBASE_CONFIG);
+}
 
-var auth=firebase.auth();
-var db=firebase.database();
-var usersRef=db.ref("users");
-var accountNumbersRef=db.ref("accountNumbers");
+var auth = firebase.auth();
+var db = firebase.database();
 
-var users={};
-var listener=null;
-var toastTimer=null;
-var saving=false;
+var usersRef = db.ref("users");
+
+var users = {};
+var listener = null;
+var toastTimer = null;
+var saving = false;
+
 
 function $(id){
   return document.getElementById(id);
 }
 
-function toast(message){
-  $("toast").textContent=message;
-  $("toast").classList.remove("hidden");
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(function(){
-    $("toast").classList.add("hidden");
-  },3500);
-}
 
 function escapeHtml(value){
-  return String(value==null?"":value).replace(/[&<>"']/g,function(c){
+  return String(value == null ? "" : value).replace(/[&<>"']/g,function(c){
     return {
       "&":"&amp;",
       "<":"&lt;",
@@ -372,32 +627,74 @@ function escapeHtml(value){
   });
 }
 
-function normalizedTimestamp(value){
-  var n=Number(value||0);
-  if(n>0&&n<100000000000)n*=1000;
+
+function toast(message){
+  $("toast").textContent = message;
+  $("toast").classList.remove("hidden");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(function(){
+    $("toast").classList.add("hidden");
+  },3500);
+}
+
+
+function timestamp(value){
+  var n = Number(value || 0);
+
+  if(n > 0 && n < 100000000000){
+    n = n * 1000;
+  }
+
   return n;
 }
 
-function expired(user){
-  var end=normalizedTimestamp(user.subscriptionEnd);
-  return end>0&&end<=Date.now();
+
+function isExpired(user){
+  var end = timestamp(user.subscriptionEnd);
+
+  return end > 0 && end <= Date.now();
 }
 
-function status(user){
-  if(expired(user)){
-    return {key:"expired",label:"منتهي",cls:"badge-expired"};
+
+function getStatus(user){
+  if(isExpired(user)){
+    return {
+      key:"expired",
+      label:"منتهي",
+      cls:"badge-expired"
+    };
   }
-  if(user.active===true){
-    return {key:"active",label:"نشط",cls:"badge-active"};
+
+  if(user.active === true){
+    return {
+      key:"active",
+      label:"نشط",
+      cls:"badge-active"
+    };
   }
-  return {key:"disabled",label:"معطّل",cls:"badge-disabled"};
+
+  return {
+    key:"disabled",
+    label:"معطّل",
+    cls:"badge-disabled"
+  };
 }
+
 
 function formatDate(value){
-  var n=normalizedTimestamp(value);
-  if(!n)return "—";
-  var date=new Date(n);
-  if(isNaN(date.getTime()))return "—";
+  var n = timestamp(value);
+
+  if(!n){
+    return "—";
+  }
+
+  var date = new Date(n);
+
+  if(isNaN(date.getTime())){
+    return "—";
+  }
 
   return new Intl.DateTimeFormat("ar-EG",{
     year:"numeric",
@@ -408,375 +705,471 @@ function formatDate(value){
   }).format(date);
 }
 
-/*
- * استنتاج مدة الاشتراك من الحقول المحفوظة.
- * الحسابات القديمة التي لا تحتوي على معلومات مدة واضحة
- * تصنّف على أنها غير محددة.
- */
-function durationDays(user){
-  var type=String(user.subscriptionType||"").toLowerCase();
-  var name=String(user.subscriptionName||"").toLowerCase();
 
-  if(type==="day"||name.indexOf("يوم واحد")!==-1)return 1;
-  if(type==="week"||name.indexOf("أسبوع")!==-1||
-     name.indexOf("اسبوع")!==-1)return 7;
-  if(type==="month"||name.indexOf("شهر")!==-1)return 30;
+function getDuration(user){
+  var type = String(user.subscriptionType || "").toLowerCase();
+  var name = String(user.subscriptionName || "").toLowerCase();
 
-  if(type==="year"||name.indexOf("سنة")!==-1||
-     name.indexOf("عام")!==-1)return 365;
+  if(type === "day" || name.indexOf("يوم واحد") !== -1){
+    return 1;
+  }
 
-  if(type==="three_months"||name.indexOf("3 أشهر")!==-1||
-     name.indexOf("ثلاثة أشهر")!==-1)return 90;
+  if(type === "week" ||
+     name.indexOf("أسبوع") !== -1 ||
+     name.indexOf("اسبوع") !== -1){
+    return 7;
+  }
 
-  var start=normalizedTimestamp(user.subscriptionStart);
-  var end=normalizedTimestamp(user.subscriptionEnd);
+  if(type === "month" || name.indexOf("شهر") !== -1){
+    return 30;
+  }
 
-  if(start>0&&end>start){
-    var days=Math.round((end-start)/86400000);
-    if(days>=1&&days<=2)return 1;
-    if(days>=6&&days<=8)return 7;
-    if(days>=28&&days<=32)return 30;
-    if(days>=88&&days<=92)return 90;
-    if(days>=363&&days<=367)return 365;
+  if(type === "year" ||
+     name.indexOf("سنة") !== -1 ||
+     name.indexOf("عام") !== -1){
+    return 365;
+  }
+
+  if(type === "three_months" ||
+     name.indexOf("3 أشهر") !== -1 ||
+     name.indexOf("ثلاثة أشهر") !== -1){
+    return 90;
+  }
+
+  var start = timestamp(user.subscriptionStart);
+  var end = timestamp(user.subscriptionEnd);
+
+  if(start > 0 && end > start){
+    var days = Math.round((end - start) / 86400000);
+
+    if(days >= 1 && days <= 2) return 1;
+    if(days >= 6 && days <= 8) return 7;
+    if(days >= 28 && days <= 32) return 30;
+    if(days >= 88 && days <= 92) return 90;
+    if(days >= 363 && days <= 367) return 365;
   }
 
   return 0;
 }
 
-function subscriptionName(user){
-  if(user.subscriptionName)return String(user.subscriptionName);
 
-  var days=durationDays(user);
-  var names={
+function subscriptionName(user){
+  if(user.subscriptionName){
+    return String(user.subscriptionName);
+  }
+
+  var days = getDuration(user);
+
+  var names = {
     1:"يوم واحد",
     7:"أسبوع واحد",
-    30:"شهر (30 يوم)",
+    30:"شهر",
     90:"3 أشهر",
     365:"سنة"
   };
 
-  return names[days]||"غير محدد";
+  return names[days] || "غير محدد";
 }
 
-function createdTimestamp(user){
-  return normalizedTimestamp(user.createdAt);
-}
 
 function getAllUsers(){
   return Object.keys(users).map(function(key){
-    var user=Object.assign({},users[key]||{});
-    user._key=key;
+    var user = Object.assign({},users[key] || {});
+    user._key = key;
     return user;
   });
 }
 
+
 function renderLatest(all){
-  var latest=all.slice().sort(function(a,b){
-    return createdTimestamp(b)-createdTimestamp(a);
+  var latest = all.slice().sort(function(a,b){
+    return timestamp(b.createdAt) - timestamp(a.createdAt);
   }).slice(0,5);
 
-  $("latestAccounts").innerHTML=latest.map(function(u){
-    var s=status(u);
-    var created=createdTimestamp(u);
+  $("latestAccounts").innerHTML = latest.map(function(user){
+    var s = getStatus(user);
 
-    return "<div class='latest-item'>"+
-      "<div class='latest-name'>"+
-      escapeHtml(u.username||"بدون اسم")+
-      "</div>"+
-      "<div class='latest-number'>رقم الحساب: "+
-      escapeHtml(u.accountNumber||"—")+
-      "</div>"+
-      "<div class='latest-number'>"+
-      escapeHtml(subscriptionName(u))+
-      "</div>"+
-      "<div class='latest-date'>"+
-      (created?escapeHtml(formatDate(created)):"تاريخ الإنشاء غير متوفر")+
-      "</div>"+
-      "<div class='latest-status'><span class='badge "+s.cls+"'>"+
-      s.label+"</span></div>"+
+    return "<div class='latest-item'>" +
+      "<div class='latest-name'>" +
+      escapeHtml(user.username || "بدون اسم") +
+      "</div>" +
+
+      "<div class='latest-number'>رقم الحساب: " +
+      escapeHtml(user.accountNumber || "—") +
+      "</div>" +
+
+      "<div class='latest-number'>" +
+      escapeHtml(subscriptionName(user)) +
+      "</div>" +
+
+      "<div class='latest-date'>" +
+      escapeHtml(formatDate(user.createdAt)) +
+      "</div>" +
+
+      "<div class='latest-status'><span class='badge " +
+      s.cls + "'>" + s.label + "</span></div>" +
+
       "</div>";
   }).join("");
 
-  $("latestEmpty").classList.toggle("hidden",latest.length!==0);
+  $("latestEmpty").classList.toggle("hidden",latest.length !== 0);
 }
 
+
 function render(){
-  var all=getAllUsers();
+  var all = getAllUsers();
 
-  $("total").textContent=all.length;
+  $("total").textContent = all.length;
 
-  $("activeCount").textContent=all.filter(function(u){
-    return u.active===true&&!expired(u);
+  $("activeCount").textContent = all.filter(function(user){
+    return user.active === true && !isExpired(user);
   }).length;
 
-  $("disabledCount").textContent=all.filter(function(u){
-    return u.active!==true;
+  $("disabledCount").textContent = all.filter(function(user){
+    return user.active !== true;
   }).length;
 
-  $("expiredCount").textContent=all.filter(expired).length;
+  $("expiredCount").textContent = all.filter(isExpired).length;
 
   renderLatest(all);
 
-  var query=$("search").value.trim().toLowerCase();
-  var filter=$("statusFilter").value;
-  var durationFilter=$("durationFilter").value;
+  var query = $("search").value.trim().toLowerCase();
+  var statusFilter = $("statusFilter").value;
+  var durationFilter = $("durationFilter").value;
 
-  var rows=all.filter(function(u){
-    var s=status(u);
+  var rows = all.filter(function(user){
+    var s = getStatus(user);
 
-    var matchesSearch=[
-      u.username,
-      u.accountNumber,
-      u.uid,
-      u._key
-    ].some(function(v){
-      return String(v||"").toLowerCase().indexOf(query)!==-1;
+    var matchesSearch = [
+      user.username,
+      user.accountNumber,
+      user.uid,
+      user._key
+    ].some(function(value){
+      return String(value || "").toLowerCase().indexOf(query) !== -1;
     });
 
-    var matchesStatus=filter==="all"||filter===s.key;
+    var matchesStatus =
+      statusFilter === "all" || statusFilter === s.key;
 
-    var days=durationDays(u);
-    var matchesDuration=durationFilter==="all"||
-      (durationFilter==="unknown"?days===0:
-       days===Number(durationFilter));
+    var days = getDuration(user);
 
-    return matchesSearch&&matchesStatus&&matchesDuration;
+    var matchesDuration =
+      durationFilter === "all" ||
+      (durationFilter === "unknown" && days === 0) ||
+      (durationFilter !== "unknown" &&
+       days === Number(durationFilter));
+
+    return matchesSearch && matchesStatus && matchesDuration;
   });
 
-  $("usersBody").innerHTML=rows.map(function(u){
-    var s=status(u);
-    var uid=u._key;
+  $("usersBody").innerHTML = rows.map(function(user){
+    var s = getStatus(user);
+    var uid = user._key;
 
-    return "<tr>"+
-      "<td><b>"+escapeHtml(u.username||"بدون اسم")+"</b>"+
-      "<div class='muted'>"+escapeHtml(uid)+"</div></td>"+
+    return "<tr>" +
 
-      "<td>"+escapeHtml(u.accountNumber||"—")+"</td>"+
-      "<td>"+escapeHtml(subscriptionName(u))+"</td>"+
-      "<td>"+escapeHtml(formatDate(u.subscriptionEnd))+"</td>"+
+      "<td><b>" +
+      escapeHtml(user.username || "بدون اسم") +
+      "</b><div class='muted'>" +
+      escapeHtml(uid) +
+      "</div></td>" +
 
-      "<td><span class='badge "+s.cls+"'>"+s.label+"</span></td>"+
+      "<td>" +
+      escapeHtml(user.accountNumber || "—") +
+      "</td>" +
 
-      "<td>"+
-      "<button class='btn soft small-btn' data-action='edit' data-uid='"+
-      escapeHtml(uid)+"'>تجديد/تعديل</button>"+
+      "<td>" +
+      escapeHtml(subscriptionName(user)) +
+      "</td>" +
 
-      "<button class='btn "+
-      (u.active===true?"danger":"success")+
-      " small-btn' data-action='toggle' data-uid='"+
-      escapeHtml(uid)+"'>"+
-      (u.active===true?"تعطيل":"تفعيل")+"</button>"+
+      "<td>" +
+      escapeHtml(formatDate(user.subscriptionEnd)) +
+      "</td>" +
 
-      "<button class='btn danger small-btn' data-action='delete' data-uid='"+
-      escapeHtml(uid)+"'>حذف</button>"+
+      "<td><span class='badge " + s.cls + "'>" +
+      s.label + "</span></td>" +
+
+      "<td>" +
+
+      "<button class='btn soft small-btn' data-action='edit' data-uid='" +
+      escapeHtml(uid) + "'>تجديد/تعديل</button>" +
+
+      "<button class='btn " +
+      (user.active === true ? "danger" : "success") +
+      " small-btn' data-action='toggle' data-uid='" +
+      escapeHtml(uid) + "'>" +
+      (user.active === true ? "تعطيل" : "تفعيل") +
+      "</button>" +
+
+      "<button class='btn danger small-btn' data-action='delete' data-uid='" +
+      escapeHtml(uid) + "'>حذف السجل</button>" +
+
       "</td></tr>";
   }).join("");
 
-  $("empty").classList.toggle("hidden",rows.length!==0);
-  $("resultCount").textContent=rows.length+" من "+all.length+" حساب";
+  $("empty").classList.toggle("hidden",rows.length !== 0);
+
+  $("resultCount").textContent =
+    rows.length + " من " + all.length + " حساب";
 }
 
-function startListener(){
-  if(listener)usersRef.off("value",listener);
 
-  listener=function(snapshot){
-    users=snapshot.val()||{};
+function startListener(){
+  stopListener();
+
+  listener = function(snapshot){
+    users = snapshot.val() || {};
     render();
   };
 
   usersRef.on("value",listener,function(error){
-    toast("خطأ في قراءة الحسابات: "+error.message);
+    toast("خطأ في قراءة الحسابات: " + error.message);
   });
 }
+
 
 function stopListener(){
   if(listener){
     usersRef.off("value",listener);
-    listener=null;
+    listener = null;
   }
-  users={};
+
+  users = {};
   render();
 }
 
+
 function openModal(user,uid){
   $("accountForm").reset();
-  $("editUid").value=uid||"";
-  $("formError").textContent="";
-  $("modalTitle").textContent="تجديد/تعديل الحساب";
 
-  $("username").value=user.username||"";
-  $("accountNumber").value=user.accountNumber||"";
-  $("active").value=user.active===true?"true":"false";
+  $("editUid").value = uid;
+  $("formError").textContent = "";
+  $("modalTitle").textContent = "تجديد/تعديل الحساب";
 
-  var days=durationDays(user);
-  $("duration").value=days?String(days):"30";
+  $("username").value = user.username || "";
+  $("accountNumber").value = user.accountNumber || "";
+  $("active").value = user.active === true ? "true" : "false";
+
+  var days = getDuration(user);
+
+  $("duration").value = days ? String(days) : "30";
 
   $("modalBg").classList.remove("hidden");
 }
+
 
 function closeModal(){
   $("modalBg").classList.add("hidden");
 }
 
+
 $("loginForm").addEventListener("submit",function(event){
   event.preventDefault();
 
-  $("loginError").textContent="";
-  $("loginBtn").disabled=true;
+  $("loginError").textContent = "";
+  $("loginBtn").disabled = true;
+  $("loginBtn").textContent = "جاري تسجيل الدخول...";
 
   auth.signInWithEmailAndPassword(
     $("email").value.trim(),
     $("password").value
   ).catch(function(error){
-    $("loginError").textContent=error.message;
+    var message = "تعذر تسجيل الدخول. تحقق من البيانات.";
+
+    if(error.code === "auth/too-many-requests"){
+      message = "محاولات كثيرة. انتظر قليلاً قبل المحاولة مجدداً.";
+    }else if(error.code === "auth/network-request-failed"){
+      message = "تحقق من اتصال الإنترنت.";
+    }else if(error.code === "auth/operation-not-allowed"){
+      message = "فعّل تسجيل الدخول بالبريد وكلمة المرور في Firebase.";
+    }else if(error.code === "auth/invalid-credential" ||
+             error.code === "auth/user-not-found" ||
+             error.code === "auth/wrong-password"){
+      message = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+    }
+
+    $("loginError").textContent = message;
   }).finally(function(){
-    $("loginBtn").disabled=false;
+    $("loginBtn").disabled = false;
+    $("loginBtn").textContent = "تسجيل الدخول";
   });
 });
 
+
 auth.onAuthStateChanged(function(user){
-  if(user){
-    $("loginView").classList.add("hidden");
-    $("appView").classList.remove("hidden");
-    $("adminEmail").textContent=user.email||"مدير النظام";
-    startListener();
-  }else{
+  if(!user){
     stopListener();
+
     $("appView").classList.add("hidden");
     $("loginView").classList.remove("hidden");
+
+    return;
   }
+
+  if(user.uid !== ADMIN_UID || user.email !== ADMIN_EMAIL){
+    $("loginError").textContent =
+      "هذا الحساب غير مصرح له بدخول لوحة الإدارة.";
+
+    auth.signOut();
+
+    return;
+  }
+
+  $("loginView").classList.add("hidden");
+  $("appView").classList.remove("hidden");
+  $("adminEmail").textContent = user.email || "مدير النظام";
+
+  startListener();
 });
 
+
 $("logoutBtn").addEventListener("click",function(){
-  stopListener();
-  auth.signOut();
+  auth.signOut().catch(function(error){
+    toast("تعذر تسجيل الخروج: " + error.message);
+  });
 });
+
 
 $("refreshBtn").addEventListener("click",function(){
   usersRef.once("value").then(function(snapshot){
-    users=snapshot.val()||{};
+    users = snapshot.val() || {};
     render();
     toast("تم تحديث البيانات");
   }).catch(function(error){
-    toast("فشل التحديث: "+error.message);
+    toast("فشل التحديث: " + error.message);
   });
 });
+
 
 $("search").addEventListener("input",render);
 $("statusFilter").addEventListener("change",render);
 $("durationFilter").addEventListener("change",render);
+
 $("cancelBtn").addEventListener("click",closeModal);
 
 $("modalBg").addEventListener("click",function(event){
-  if(event.target===$("modalBg"))closeModal();
+  if(event.target === $("modalBg")){
+    closeModal();
+  }
 });
 
+
 $("usersBody").addEventListener("click",function(event){
-  var button=event.target.closest("button[data-action]");
+  var button = event.target.closest("button[data-action]");
+
   if(!button)return;
 
-  var uid=button.getAttribute("data-uid");
-  var user=users[uid];
+  var uid = button.getAttribute("data-uid");
+  var user = users[uid];
 
   if(!user)return;
 
-  var action=button.getAttribute("data-action");
+  var action = button.getAttribute("data-action");
 
-  if(action==="edit"){
+  if(action === "edit"){
     openModal(user,uid);
     return;
   }
 
-  if(action==="toggle"){
-    var activate=user.active!==true;
+  if(action === "toggle"){
+    var activate = user.active !== true;
 
-    if(!confirm((activate?"تفعيل":"تعطيل")+
-      " الحساب "+(user.username||uid)+"؟"))return;
+    if(!confirm(
+      (activate ? "تفعيل" : "تعطيل") +
+      " الحساب " + (user.username || uid) + "؟"
+    )){
+      return;
+    }
 
-    button.disabled=true;
+    button.disabled = true;
 
     usersRef.child(uid).update({
       active:activate,
       updatedAt:Date.now()
     }).then(function(){
-      toast(activate?"تم تفعيل الحساب":"تم تعطيل الحساب");
+      toast(activate ? "تم تفعيل الحساب" : "تم تعطيل الحساب");
     }).catch(function(error){
-      toast("فشل التعديل: "+error.message);
+      toast("فشل التعديل: " + error.message);
     }).finally(function(){
-      button.disabled=false;
+      button.disabled = false;
     });
 
     return;
   }
 
-  if(action==="delete"){
-    var accountNumber=String(user.accountNumber||"");
+  if(action === "delete"){
+    var accountNumber = String(user.accountNumber || "");
 
     if(!confirm(
-      "هل تريد حذف سجل الحساب نهائياً من قاعدة البيانات؟\n\n"+
-      "اسم المستخدم: "+(user.username||"—")+
-      "\nرقم الحساب: "+(accountNumber||"—")+
-      "\n\nلن يؤدي ذلك إلى حذف مستخدم Firebase Authentication نفسه."
-    ))return;
+      "هل تريد حذف سجل الحساب من قاعدة البيانات؟\n\n" +
+      "اسم المستخدم: " + (user.username || "—") +
+      "\nرقم الحساب: " + (accountNumber || "—") +
+      "\n\nلن يحذف هذا حساب Firebase Authentication نفسه."
+    )){
+      return;
+    }
 
-    button.disabled=true;
+    button.disabled = true;
 
-    var updates={};
-    updates["users/"+uid]=null;
+    var updates = {};
+    updates["users/" + uid] = null;
 
     if(accountNumber){
-      updates["accountNumbers/"+accountNumber]=null;
+      updates["accountNumbers/" + accountNumber] = null;
     }
 
     db.ref().update(updates).then(function(){
-      toast("تم حذف سجل الحساب ورقم الحساب");
+      toast("تم حذف سجل الحساب");
     }).catch(function(error){
-      toast("تعذر حذف الحساب: "+error.message);
+      toast("تعذر حذف الحساب: " + error.message);
     }).finally(function(){
-      button.disabled=false;
+      button.disabled = false;
     });
   }
 });
+
 
 $("accountForm").addEventListener("submit",function(event){
   event.preventDefault();
 
   if(saving)return;
 
-  var uid=$("editUid").value;
-  var username=$("username").value.trim();
-  var duration=Number($("duration").value);
-  var old=users[uid];
+  var uid = $("editUid").value;
+  var username = $("username").value.trim();
+  var duration = Number($("duration").value);
+  var old = users[uid];
 
-  $("formError").textContent="";
+  $("formError").textContent = "";
 
-  if(!uid||!old){
-    $("formError").textContent="الحساب غير موجود. حدّث الصفحة وحاول مجدداً.";
+  if(!uid || !old){
+    $("formError").textContent =
+      "الحساب غير موجود. حدّث الصفحة وحاول مجدداً.";
     return;
   }
 
   if(!username){
-    $("formError").textContent="اكتب اسم المستخدم.";
+    $("formError").textContent = "اكتب اسم المستخدم.";
     return;
   }
 
-  var allowed=[1,7,30,90,365];
+  var allowed = [1,7,30,90,365];
 
-  if(allowed.indexOf(duration)===-1){
-    $("formError").textContent="اختر مدة اشتراك صحيحة.";
+  if(allowed.indexOf(duration) === -1){
+    $("formError").textContent = "اختر مدة اشتراك صحيحة.";
     return;
   }
 
-  var now=Date.now();
-  var oldEnd=normalizedTimestamp(old.subscriptionEnd);
+  var now = Date.now();
+  var oldEnd = timestamp(old.subscriptionEnd);
 
   /*
-   * إذا كان الاشتراك سارياً، تضاف المدة إلى نهايته.
-   * إذا انتهى، يبدأ التجديد من الوقت الحالي.
+   * إذا كان الاشتراك سارياً، أضف المدة إلى نهايته.
+   * إذا انتهى أو لم يوجد تاريخ انتهاء، ابدأ من الوقت الحالي.
    */
-  var end=Math.max(now,oldEnd)+duration*86400000;
+  var end = Math.max(now,oldEnd) + duration * 86400000;
 
-  var names={
+  var names = {
     1:"يوم واحد",
     7:"أسبوع واحد",
     30:"شهر (30 يوم)",
@@ -784,31 +1177,35 @@ $("accountForm").addEventListener("submit",function(event){
     365:"سنة"
   };
 
-  var data={
+  var data = {
     username:username,
-    active:$("active").value==="true",
+    active:$("active").value === "true",
+
     subscriptionType:
-      duration===1?"day":
-      duration===7?"week":
-      duration===30?"month":
-      duration===90?"three_months":"year",
+      duration === 1 ? "day" :
+      duration === 7 ? "week" :
+      duration === 30 ? "month" :
+      duration === 90 ? "three_months" : "year",
+
     subscriptionName:names[duration],
-    subscriptionStart:now,
+    subscriptionStart:old.subscriptionStart || now,
     subscriptionEnd:end,
     updatedAt:now
   };
 
-  saving=true;
-  $("saveBtn").disabled=true;
+  saving = true;
+  $("saveBtn").disabled = true;
+  $("saveBtn").textContent = "جاري الحفظ...";
 
   usersRef.child(uid).update(data).then(function(){
     closeModal();
     toast("تم تحديث الحساب وتجديد الاشتراك");
   }).catch(function(error){
-    $("formError").textContent="فشل الحفظ: "+error.message;
+    $("formError").textContent = "فشل الحفظ: " + error.message;
   }).finally(function(){
-    saving=false;
-    $("saveBtn").disabled=false;
+    saving = false;
+    $("saveBtn").disabled = false;
+    $("saveBtn").textContent = "حفظ التعديلات";
   });
 });
 
