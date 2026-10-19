@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080b14">
+<title>BOK-PED PRO | لوحة الإدارة</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Cairo, Arial, sans-serif;
+  color: #f5f7ff;
+  background:
+    radial-gradient(circle at top right, #172c50, transparent 40%),
+    #080b14;
+  min-height: 100vh;
+}
+
+button, input, select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.container {
+  width: min(1200px, 100%);
+  margin: auto;
+  padding: 20px;
+}
+
+.card {
+  background: rgba(20, 26, 42, .88);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 22px;
+  padding: 20px;
+  box-shadow: 0 15px 45px rgba(0,0,0,.22);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #76a2ff, #315bd0);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 21px;
+}
+
+.muted {
+  color: #9ca8c2;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.login {
+  width: min(430px, 100%);
+  margin: 8vh auto;
+}
+
+.field {
+  margin: 14px 0;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #bbc6df;
+  font-size: 12px;
+}
+
+.field input,
+.field select,
+.search,
+.filter {
+  width: 100%;
+  padding: 12px;
+  color: white;
+  background: #090d18;
+  border: 1px solid #ffffff18;
+  border-radius: 12px;
+  outline: none;
+}
+
+.field input:focus,
+.search:focus {
+  border-color: #6895ff;
+}
+
+.btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+}
+
+.primary {
+  color: white;
+  background: linear-gradient(135deg, #6595ff, #3a63df);
+}
+
+.soft {
+  color: white;
+  background: #ffffff0b;
+  border: 1px solid #ffffff18;
+}
+
+.danger {
+  color: #ff9baa;
+  background: #ff647719;
+  border: 1px solid #ff647740;
+}
+
+.success {
+  color: #67e5b5;
+  background: #35d49a19;
+  border: 1px solid #35d49a40;
+}
+
+.full {
+  width: 100%;
+}
+
+.error {
+  color: #ff8c9e;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 26px 0 14px;
+  flex-wrap: wrap;
+}
+
+.heading h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.stat-label {
+  color: #9ca8c2;
+  font-size: 12px;
+}
+
+.stat-number {
+  margin-top: 8px;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.search {
+  flex: 1;
+  min-width: 180px;
+}
+
+.filter {
+  width: auto;
+  max-width: 100%;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+th, td {
+  padding: 14px;
+  text-align: right;
+  border-bottom: 1px solid #ffffff12;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+th {
+  color: #aab7d1;
+  background: #ffffff04;
+}
+
+.badge {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 5px 9px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.badge-active {
+  background: #35d49a1a;
+  color: #68e5b5;
+}
+
+.badge-disabled {
+  background: #ff64771a;
+  color: #ff9baa;
+}
+
+.badge-expired {
+  background: #ffbd661a;
+  color: #ffd18d;
+}
+
+.small-btn {
+  font-size: 10px;
+  padding: 7px 9px;
+  margin: 2px;
+}
+
+.empty {
+  padding: 25px;
+  color: #9ca8c2;
+  text-align: center;
+  font-size: 12px;
+}
+
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: #03050bdc;
+  display: grid;
+  place-items: center;
+  padding: 15px;
+}
+
+.modal {
+  width: min(520px, 100%);
+  max-height: 92vh;
+  overflow: auto;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.modal-actions button {
+  flex: 1;
+}
+
+.toast {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  max-width: 90%;
+  padding: 12px 16px;
+  border-radius: 13px;
+  border: 1px solid #ffffff20;
+  background: #1b2439;
+  font-size: 12px;
+  text-align: center;
+}
+
+@media(max-width: 800px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media(max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .stat-number {
+    font-size: 25px;
+  }
+
+  .brand h1 {
+    font-size: 17px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<section id="loginView" class="container">
+  <div class="login card">
+    <div class="brand">
+      <div class="logo">BP</div>
+      <div>
+        <h1>BOK-PED PRO</h1>
+        <div class="muted">لوحة إدارة الحسابات</div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:25px">تسجيل دخول المدير</h2>
+    <p class="muted">استخدم حساب المدير المسجل في Firebase Authentication.</p>
+
+    <form id="loginForm">
+      <div class="field">
+        <label>البريد الإلكتروني</label>
+        <input id="email" type="email" required autocomplete="username">
+      </div>
+
+      <div class="field">
+        <label>كلمة المرور</label>
+        <input id="password" type="password" required autocomplete="current-password">
+      </div>
+
+      <button id="loginBtn" class="btn primary full">تسجيل الدخول</button>
+      <p id="loginError" class="error"></p>
+    </form>
+  </div>
+</section>
+
+<main id="appView" class="container hidden">
+
+  <header class="top">
+    <div class="brand">
+      <div class="logo">BP</div>
+      <div>
+        <h1>BOK-PED <span style="color:#7fa5ff">PRO</span></h1>
+        <div class="muted">إدارة الاشتراكات والحسابات</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <span id="adminEmail" class="muted"></span>
+      <button id="refreshBtn" class="btn soft">↻ تحديث</button>
+      <button id="logoutBtn" class="btn danger">خروج</button>
+    </div>
+  </header>
+
+  <div class="heading">
+    <div>
+      <h2>نظرة عامة</h2>
+      <div class="muted">إحصائيات الحسابات المسجلة</div>
+    </div>
+    <button id="addBtn" class="btn primary">＋ إضافة حساب</button>
+  </div>
+
+  <section class="stats">
+    <div class="card">
+      <div class="stat-label">إجمالي الحسابات</div>
+      <div id="total" class="stat-number">0</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">الحسابات النشطة</div>
+      <div id="activeCount" class="stat-number">0</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">الحسابات المعطلة</div>
+      <div id="disabledCount" class="stat-number">0</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">الاشتراكات المنتهية</div>
+      <div id="expiredCount" class="stat-number">0</div>
+    </div>
+  </section>
+
+  <div class="heading">
+    <div>
+      <h2>الحسابات</h2>
+      <div class="muted">البحث والتفعيل والتعطيل والتجديد</div>
+    </div>
+  </div>
+
+  <div class="toolbar card">
+    <input id="search" class="search" placeholder="ابحث بالاسم أو رقم الحساب أو UID">
+    <select id="statusFilter" class="filter">
+      <option value="all">كل الحالات</option>
+      <option value="active">نشطة</option>
+      <option value="disabled">معطلة</option>
+      <option value="expired">منتهية</option>
+    </select>
+  </div>
+
+  <section class="card" style="padding:0;overflow:hidden">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>اسم المستخدم</th>
+            <th>رقم الحساب</th>
+            <th>الاشتراك</th>
+            <th>تاريخ الانتهاء</th>
+            <th>الحالة</th>
+            <th>الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody id="usersBody"></tbody>
+      </table>
+    </div>
+    <div id="empty" class="empty hidden">لا توجد حسابات مطابقة.</div>
+    <div id="resultCount" class="muted" style="padding:13px"></div>
+  </section>
+
+</main>
+
+<div id="modalBg" class="modal-bg hidden">
+  <div class="modal card">
+    <h2 id="modalTitle" style="margin-top:0">إضافة حساب</h2>
+
+    <form id="accountForm">
+      <input id="editUid" type="hidden">
+
+      <div class="field">
+        <label>اسم المستخدم</label>
+        <input id="username" required maxlength="80">
+      </div>
+
+      <div class="field">
+        <label>رقم الحساب</label>
+        <input id="accountNumber" required maxlength="30">
+      </div>
+
+      <div class="field">
+        <label>مدة الاشتراك</label>
+        <select id="duration">
+          <option value="1">يوم واحد</option>
+          <option value="7">أسبوع</option>
+          <option value="30" selected>شهر (30 يوم)</option>
+          <option value="90">3 أشهر</option>
+          <option value="365">سنة</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>حالة الحساب</label>
+        <select id="active">
+          <option value="true">مفعّل</option>
+          <option value="false">معطّل</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>معرّف الجهاز (اختياري)</label>
+        <input id="deviceId" maxlength="150">
+      </div>
+
+      <p class="muted">التجديد يضيف المدة الجديدة إلى نهاية الاشتراك الحالي إن كان سارياً، وإلا يبدأ من الوقت الحالي.</p>
+      <p id="formError" class="error"></p>
+
+      <div class="modal-actions">
+        <button id="saveBtn" class="btn primary">حفظ</button>
+        <button id="cancelBtn" type="button" class="btn soft">إلغاء</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  if (!window.BOK_PED_FIREBASE_CONFIG) {
+    alert("لم يتم تحميل firebase-config.js");
+    return;
+  }
+
+  firebase.initializeApp(window.BOK_PED_FIREBASE_CONFIG);
+
+  var auth = firebase.auth();
+  var db = firebase.database();
+  var usersRef = db.ref("users");
+  var users = {};
+  var listener = null;
+  var toastTimer = null;
+
+  function $(id) {
+    return document.getElementById(id);
+  }
+
+  function toast(message) {
+    $("toast").textContent = message;
+    $("toast").classList.remove("hidden");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      $("toast").classList.add("hidden");
+    }, 3000);
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[c];
+    });
+  }
+
+  function normalizedTimestamp(value) {
+    var n = Number(value || 0);
+    if (n > 0 && n < 100000000000) n *= 1000;
+    return n;
+  }
+
+  function expired(user) {
+    var end = normalizedTimestamp(user.subscriptionEnd);
+    return end > 0 && end <= Date.now();
+  }
+
+  function status(user) {
+    if (expired(user)) {
+      return { key: "expired", label: "منتهي", cls: "badge-expired" };
+    }
+
+    if (user.active === true) {
+      return { key: "active", label: "نشط", cls: "badge-active" };
+    }
+
+    return { key: "disabled", label: "معطّل", cls: "badge-disabled" };
+  }
+
+  function formatDate(value) {
+    var n = normalizedTimestamp(value);
+    if (!n) return "—";
+
+    var date = new Date(n);
+    if (isNaN(date.getTime())) return "—";
+
+    return new Intl.DateTimeFormat("ar-EG", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    }).format(date);
+  }
+
+  function subscriptionName(user) {
+    if (user.subscriptionName) return String(user.subscriptionName);
+
+    var names = {
+      day: "يوم واحد",
+      week: "أسبوع",
+      month: "شهر"
+    };
+
+    return names[user.subscriptionType] || "غير محدد";
+  }
+
+  function render() {
+    var all = Object.keys(users).map(function (key) {
+      var user = users[key] || {};
+      user._key = key;
+      return user;
+    });
+
+    var active = all.filter(function (u) {
+      return u.active === true && !expired(u);
+    }).length;
+
+    var disabled = all.filter(function (u) {
+      return u.active !== true;
+    }).length;
+
+    var expiredCount = all.filter(expired).length;
+
+    $("total").textContent = all.length;
+    $("activeCount").textContent = active;
+    $("disabledCount").textContent = disabled;
+    $("expiredCount").textContent = expiredCount;
+
+    var query = $("search").value.trim().toLowerCase();
+    var filter = $("statusFilter").value;
+
+    var rows = all.filter(function (u) {
+      var s = status(u);
+      var matchesQuery = [
+        u.username,
+        u.accountNumber,
+        u.uid,
+        u._key
+      ].some(function (v) {
+        return String(v || "").toLowerCase().indexOf(query) !== -1;
+      });
+
+      return matchesQuery && (filter === "all" || filter === s.key);
+    });
+
+    $("usersBody").innerHTML = rows.map(function (u) {
+      var s = status(u);
+      var uid = u._key;
+
+      return "<tr>" +
+        "<td><b>" + escapeHtml(u.username || "بدون اسم") + "</b><div class='muted'>" +
+        escapeHtml(uid) + "</div></td>" +
+        "<td>" + escapeHtml(u.accountNumber || "—") + "</td>" +
+        "<td>" + escapeHtml(subscriptionName(u)) + "</td>" +
+        "<td>" + escapeHtml(formatDate(u.subscriptionEnd)) + "</td>" +
+        "<td><span class='badge " + s.cls + "'>" + s.label + "</span></td>" +
+        "<td>" +
+        "<button class='btn soft small-btn' data-action='edit' data-uid='" + escapeHtml(uid) + "'>تجديد/تعديل</button>" +
+        "<button class='btn " + (u.active === true ? "danger" : "success") +
+        " small-btn' data-action='toggle' data-uid='" + escapeHtml(uid) + "'>" +
+        (u.active === true ? "تعطيل" : "تفعيل") + "</button>" +
+        "</td></tr>";
+    }).join("");
+
+    $("empty").classList.toggle("hidden", rows.length !== 0);
+    $("resultCount").textContent = rows.length + " من " + all.length + " حساب";
+  }
+
+  function startListener() {
+    if (listener) usersRef.off("value", listener);
+
+    listener = function (snapshot) {
+      users = snapshot.val() || {};
+      render();
+    };
+
+    usersRef.on("value", listener, function (error) {
+      toast("خطأ في قراءة الحسابات: " + error.message);
+    });
+  }
+
+  function stopListener() {
+    if (listener) {
+      usersRef.off("value", listener);
+      listener = null;
+    }
+    users = {};
+  }
+
+  function openModal(user, uid) {
+    $("accountForm").reset();
+    $("editUid").value = uid || "";
+    $("formError").textContent = "";
+    $("modalTitle").textContent = uid ? "تعديل وتجديد الاشتراك" : "إضافة حساب جديد";
+
+    if (user) {
+      $("username").value = user.username || "";
+      $("accountNumber").value = user.accountNumber || "";
+      $("active").value = user.active === true ? "true" : "false";
+      $("deviceId").value = user.deviceId || "";
+    } else {
+      $("active").value = "true";
+    }
+
+    $("modalBg").classList.remove("hidden");
+  }
+
+  function closeModal() {
+    $("modalBg").classList.add("hidden");
+  }
+
+  $("loginForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    $("loginError").textContent = "";
+    $("loginBtn").disabled = true;
+
+    auth.signInWithEmailAndPassword(
+      $("email").value.trim(),
+      $("password").value
+    ).catch(function (error) {
+      $("loginError").textContent = error.message;
+    }).finally(function () {
+      $("loginBtn").disabled = false;
+    });
+  });
+
+  auth.onAuthStateChanged(function (user) {
+    if (user) {
+      $("loginView").classList.add("hidden");
+      $("appView").classList.remove("hidden");
+      $("adminEmail").textContent = user.email || "مدير النظام";
+      startListener();
+    } else {
+      stopListener();
+      $("appView").classList.add("hidden");
+      $("loginView").classList.remove("hidden");
+    }
+  });
+
+  $("logoutBtn").addEventListener("click", function () {
+    stopListener();
+    auth.signOut();
+  });
+
+  $("refreshBtn").addEventListener("click", function () {
+    usersRef.once("value").then(function (snapshot) {
+      users = snapshot.val() || {};
+      render();
+      toast("تم تحديث البيانات");
+    }).catch(function (error) {
+      toast(error.message);
+    });
+  });
+
+  $("search").addEventListener("input", render);
+  $("statusFilter").addEventListener("change", render);
+  $("addBtn").addEventListener("click", function () {
+    openModal(null, null);
+  });
+  $("cancelBtn").addEventListener("click", closeModal);
+  $("modalBg").addEventListener("click", function (event) {
+    if (event.target === $("modalBg")) closeModal();
+  });
+
+  $("usersBody").addEventListener("click", function (event) {
+    var button = event.target.closest("button[data-action]");
+    if (!button) return;
+
+    var uid = button.getAttribute("data-uid");
+    var user = users[uid];
+    if (!user) return;
+
+    if (button.getAttribute("data-action") === "edit") {
+      openModal(user, uid);
+      return;
+    }
+
+    var activate = user.active !== true;
+
+    if (!confirm((activate ? "تفعيل" : "تعطيل") + " الحساب " +
+      (user.username || uid) + "؟")) return;
+
+    usersRef.child(uid).update({
+      active: activate,
+      updatedAt: Date.now()
+    }).then(function () {
+      toast(activate ? "تم تفعيل الحساب" : "تم تعطيل الحساب");
+    }).catch(function (error) {
+      toast("فشل التعديل: " + error.message);
+    });
+  });
+
+  $("accountForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var uid = $("editUid").value;
+    var username = $("username").value.trim();
+    var accountNumber = $("accountNumber").value.trim();
+    var duration = Number($("duration").value);
+
+    if (!username || !accountNumber) {
+      $("formError").textContent = "أدخل اسم المستخدم ورقم الحساب.";
+      return;
+    }
+
+    var now = Date.now();
+    var old = uid ? users[uid] : null;
+    var oldEnd = old ? normalizedTimestamp(old.subscriptionEnd) : 0;
+    var start = now;
+    var end = Math.max(now, oldEnd) + duration * 86400000;
+
+    var names = {
+      1: "يوم واحد",
+      7: "أسبوع",
+      30: "شهر (30 يوم)",
+      90: "3 أشهر",
+      365: "سنة"
+    };
+
+    var data = {
+      username: username,
+      accountNumber: accountNumber,
+      active: $("active").value === "true",
+      subscriptionType: duration === 1 ? "day" :
+        duration === 7 ? "week" :
+        duration === 30 ? "month" : "custom",
+      subscriptionName: names[duration] || duration + " يوم",
+      subscriptionStart: start,
+      subscriptionEnd: end,
+      updatedAt: now
+    };
+
+    var deviceId = $("deviceId").value.trim();
+    if (deviceId) data.deviceId = deviceId;
+
+    $("saveBtn").disabled = true;
+
+    var task;
+
+    if (uid) {
+      task = usersRef.child(uid).update(data);
+    } else {
+      var newRef = usersRef.push();
+      data.uid = newRef.key;
+      data.createdAt = now;
+
+      task = newRef.set(data).then(function () {
+        return db.ref("accountNumbers").child(accountNumber).set(newRef.key);
+      });
+    }
+
+    task.then(function () {
+      closeModal();
+      toast(uid ? "تم تحديث الحساب وتجديد الاشتراك" : "تم إنشاء الحساب");
+    }).catch(function (error) {
+      $("formError").textContent = "فشل الحفظ: " + error.message;
+    }).finally(function () {
+      $("saveBtn").disabled = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>
